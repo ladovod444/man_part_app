@@ -61,7 +61,7 @@ final class ManufactureApplicationProductsDTO implements ManufactureApplicationP
      * Идентификатор множественного варианта торгового предложения
      */
     #[Assert\Uuid]
-//    private ?ProductVariationUid $variation = null;
+    private ?ProductVariationUid $variation = null;
 
     /**
      * Идентификатор модификации множественного варианта торгового предложения
@@ -158,16 +158,16 @@ final class ManufactureApplicationProductsDTO implements ManufactureApplicationP
      * Идентификатор множественного варианта торгового предложения
      */
 
-//    public function getVariation(): ?ProductVariationUid
-//    {
-//        return $this->variation;
-//    }
-//
-//    public function setVariation(?ProductVariationUid $variation): self
-//    {
-//        $this->variation = $variation;
-//        return $this;
-//    }
+    public function getVariation(): ?ProductVariationUid
+    {
+        return $this->variation;
+    }
+
+    public function setVariation(?ProductVariationUid $variation): self
+    {
+        $this->variation = $variation;
+        return $this;
+    }
 
     /**
      * Идентификатор модификации множественного варианта торгового предложения

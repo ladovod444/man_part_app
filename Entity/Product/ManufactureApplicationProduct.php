@@ -28,6 +28,7 @@ use BaksDev\Manufacture\Part\Application\Entity\Event\ManufactureApplicationEven
 use BaksDev\Manufacture\Part\Application\Type\Product\ManufactureApplicationProductUid;
 use BaksDev\Products\Product\Type\Event\ProductEventUid;
 use BaksDev\Products\Product\Type\Offers\Id\ProductOfferUid;
+use BaksDev\Products\Product\Type\Offers\Variation\Id\ProductVariationUid;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
@@ -37,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'manufacture_application_product')]
 #[ORM\Index(columns: ['event'])]
 //#[ORM\Index(columns: ['product', 'offer', 'variation', 'modification'])]
-#[ORM\Index(columns: ['product', 'offer'])]
+#[ORM\Index(columns: ['product', 'offer', 'variation'])]
 class ManufactureApplicationProduct extends EntityEvent
 {
     /**
@@ -71,6 +72,13 @@ class ManufactureApplicationProduct extends EntityEvent
     #[Assert\Uuid]
     #[ORM\Column(type: ProductOfferUid::TYPE, nullable: true)]
     private ?ProductOfferUid $offer;
+
+    /**
+     * Идентификатор торгового предложения
+     */
+    #[Assert\Uuid]
+    #[ORM\Column(type: ProductVariationUid::TYPE, nullable: true)]
+    private ?ProductVariationUid $variation;
 
     /**
      * Количество в заявке

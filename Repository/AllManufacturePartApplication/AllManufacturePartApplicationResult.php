@@ -25,8 +25,10 @@ namespace BaksDev\Manufacture\Part\Application\Repository\AllManufacturePartAppl
 
 use BaksDev\Manufacture\Part\Application\Type\Event\ManufactureApplicationEventUid;
 use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
+use BaksDev\Products\Product\Type\Event\ProductEventUid;
 use BaksDev\Products\Product\Type\Id\ProductUid;
 use BaksDev\Products\Product\Type\Offers\Id\ProductOfferUid;
+use BaksDev\Products\Product\Type\Offers\Variation\Id\ProductVariationUid;
 
 class AllManufacturePartApplicationResult
 {
@@ -37,11 +39,17 @@ class AllManufacturePartApplicationResult
         private string|null $product_uid,
         private string|null $product_offer_uid,
 
+//        private string|null $product_variation_uid,
+
         private string|null $action_name,
 
         private string|null $users_profile_username,
 
         private string|null $product_name,
+
+        private ?string $product_image,
+        private ?string $product_image_ext,
+        private ?bool $product_image_cdn,
 
         private bool|null $priority,
 
@@ -76,9 +84,14 @@ class AllManufacturePartApplicationResult
         return new ManufactureApplicationEventUid($this->event);
     }
 
-    public function getProductId(): ProductUid
+//    public function getProductId(): ProductUid
+//    {
+//        return new ProductUid($this->product_uid);
+//    }
+
+    public function getProductId(): ProductEventUid
     {
-        return new ProductUid($this->product_uid);
+        return new ProductEventUid($this->product_uid);
     }
 
     public function getProductOfferUid(): ProductOfferUid
@@ -89,6 +102,26 @@ class AllManufacturePartApplicationResult
 //        }
 
         return new ProductOfferUid($this->product_offer_uid);
+    }
+
+//    public function getProductVariationUid(): ?ProductVariationUid
+//    {
+//        if(is_null($this->product_variation_uid))
+//        {
+//            return null;
+//        }
+//
+//        return new ProductVariationUid($this->product_offer_uid);
+//    }
+
+    public function getProductRootImages(): array|null
+    {
+        return [
+            'img_root' => true,
+            'img' => $this->product_image,
+            'img_ext' => $this->product_image_ext,
+            'img_cdn' => $this->product_image_cdn,
+        ];
     }
 
     public function getProductTotal(): ?int {

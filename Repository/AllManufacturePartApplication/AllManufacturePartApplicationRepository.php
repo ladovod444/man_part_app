@@ -28,8 +28,11 @@ use BaksDev\Manufacture\Part\Application\Entity\Event\ManufactureApplicationEven
 use BaksDev\Manufacture\Part\Application\Entity\ManufactureApplication;
 use BaksDev\Manufacture\Part\Application\Entity\Product\ManufactureApplicationProduct;
 use BaksDev\Products\Product\Entity\Offers\Image\ProductOfferImage;
+use BaksDev\Products\Product\Entity\Offers\ProductOffer;
 use BaksDev\Products\Product\Entity\Offers\Variation\Image\ProductVariationImage;
 use BaksDev\Products\Product\Entity\Offers\Variation\Modification\Image\ProductModificationImage;
+use BaksDev\Products\Product\Entity\Offers\Variation\Modification\ProductModification;
+use BaksDev\Products\Product\Entity\Offers\Variation\ProductVariation;
 use BaksDev\Products\Product\Entity\Photo\ProductPhoto;
 use BaksDev\Products\Product\Entity\Trans\ProductTrans;
 use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
@@ -88,10 +91,36 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
 
 
 
+
+
+
         //////////////////////////////////////////////////////
 
+        $dbal->leftJoin(
+            'manufacture_application_product',
+            ProductOffer::class,
+            'product_offer',
+            'product_offer.event = manufacture_application_product.product',
+        );
+
+        $dbal->leftJoin(
+            'product_offer',
+            ProductVariation::class,
+            'product_variation',
+            'product_variation.offer = product_offer.id',
+        );
+
+        $dbal->leftJoin(
+            'product_variation',
+            ProductModification::class,
+            'product_modification',
+            'product_modification.variation = product_variation.id',
+        );
+
+
         // Фото продукта
-        /*
+
+
         $dbal->leftJoin(
             'product_modification',
             ProductModificationImage::class,
@@ -102,6 +131,7 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
 			',
         );
 
+
         $dbal->leftJoin(
             'product_offer',
             ProductVariationImage::class,
@@ -111,6 +141,7 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
                 product_variation_image.root = true
 			',
         );
+
 
         $dbal->leftJoin(
             'product_offer',
@@ -123,13 +154,14 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
 			',
         );
 
+
         $dbal->leftJoin(
             'product_offer',
             ProductPhoto::class,
             'product_photo',
             '
                 product_offer_images.name IS NULL AND
-                product_photo.event = product.event AND
+                product_photo.event = manufacture_application_product.product AND
                 product_photo.root = true
 			');
 
@@ -172,7 +204,7 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
                 product_photo.cdn
             ) AS product_image_cdn',
         );
-        */
+
 
         //////////////////////////////////////////////////////
 
@@ -213,7 +245,7 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
         $dbal->addOrderBy('manufacture_application_event.priority DESC');
         $dbal->addOrderBy('manufacture_application.id ASC');
 
-        // TODO добавить сортировку по UID 
+        $dbal->allGroupByExclude();
 
         $result = $dbal->fetchAllHydrate(AllManufacturePartApplicationResult::class);
 

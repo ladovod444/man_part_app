@@ -79,7 +79,7 @@ final class NewController extends AbstractController
 
             $events[$key] = $ManufactureApplicationProductDTO->getProduct();
             $offers[$key] = $ManufactureApplicationProductDTO->getOffer();
-//            $variations[$key] = $ManufacturePartProductDTO->getVariation();
+            $variations[$key] = $ManufactureApplicationProductDTO->getVariation();
 //            $modifications[$key] = $ManufacturePartProductDTO->getModification();
 
         }
@@ -108,7 +108,7 @@ final class NewController extends AbstractController
         $details = $productsDetail
             ->events($events)
             ->offers($offers)
-//            ->variations($variations)
+            ->variations($variations)
 //            ->modifications($modifications)
             ->toArray();
 

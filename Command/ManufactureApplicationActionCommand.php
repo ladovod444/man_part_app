@@ -98,7 +98,7 @@ class ManufactureApplicationActionCommand extends Command
 
         // Задать предопределенное значение
         $UsersTableActionsDTO->setApplication(new  UsersTableActionsUid(ManufactureApplicationUid::ACTION_ID));
-        
+
         /** Создать производственный процесс */
         $this->UsersTableActionsHandler->handle($UsersTableActionsDTO);
 

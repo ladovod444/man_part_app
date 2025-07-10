@@ -74,18 +74,18 @@ final class ManufactureApplicationProductsForm extends AbstractType
         );
 
 //
-//        $builder->add('variation', HiddenType::class);
-//
-//        $builder->get('variation')->addModelTransformer(
-//            new CallbackTransformer(
-//                function($variation) {
-//                    return $variation instanceof ProductVariationUid ? $variation->getValue() : $variation;
-//                },
-//                function($variation) {
-//                    return $variation ? new ProductVariationUid($variation) : null;
-//                }
-//            )
-//        );
+        $builder->add('variation', HiddenType::class);
+
+        $builder->get('variation')->addModelTransformer(
+            new CallbackTransformer(
+                function($variation) {
+                    return $variation instanceof ProductVariationUid ? $variation->getValue() : $variation;
+                },
+                function($variation) {
+                    return $variation ? new ProductVariationUid($variation) : null;
+                }
+            )
+        );
 //
 //
 //        $builder->add('modification', HiddenType::class);

@@ -50,38 +50,6 @@ final class ActionByMainRepository implements ActionByMainInterface
 
         $result = $dbal->fetchAssociative();
 
-//        dd($result['id']);
-
-//        return $result['id'];
-
         return new UsersTableActionsEventUid($result['id']);
-
-//        $res = $dbal->fetchHydrate(UsersTableActionsEventUid::class);
-
-//        dd($res);
-
-//        $qb->join(
-//            UsersTableActions::class,
-//            'action',
-//            'WITH',
-//            'action.event = event.id'
-//        );
-
-//        $qb->andWhere('product.event IS NULL');
-
-//        dd($qb->getOneOrNullResult());
-
-//        dd($qb->getResult());
-
-//        $result = $qb->getQuery()->getSingleResult();
-//
-//        return $result['id'];
-//
-//        dd($result);
-//
-//        return $qb->getResult();
-
-//        return $qb
-//            ->getOneOrNullResult();
     }
 }
