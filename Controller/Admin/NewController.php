@@ -41,7 +41,7 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
-#[RoleSecurity('ROLE_MANUFACTURE_PART_NEW')]
+#[RoleSecurity('ROLE_MANUFACTURE_PART_APPLICATION_NEW')]
 final class NewController extends AbstractController
 {
 

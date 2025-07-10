@@ -25,7 +25,7 @@ use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 
 #[AsController]
-#[RoleSecurity('ROLE_MANUFACTURE_PART')]
+#[RoleSecurity('ROLE_MANUFACTURE_PART_APPLICATION')]
 final class IndexController extends AbstractController
 {
     #[Route('/admin/manufacture/application/{page<\d+>}', name: 'admin.index', methods: ['GET', 'POST'])]
