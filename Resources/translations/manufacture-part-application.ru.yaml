@@ -6,3 +6,6 @@ admin:
       new: "Создать производственную заявку"
   page:
     manufacture-application: "Список производственных заявок"
+
+  breadcrumb:
+    index: "Производственные заявки"

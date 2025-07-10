@@ -1,19 +1,19 @@
-
+{# @var item \BaksDev\Manufacture\Part\Application\Repository\AllManufacturePartApplication\AllManufacturePartApplicationResult #}
 
 
 {% set priority_bg = item.priority ? '#fff3cd' : '#fff' %}
 
 {# <tr class="vertical-middle" style="border-bottom: 5px solid {{ priority_border }};"> #}
-<tr class="vertical-middle border-bottom">
+<tr class="vertical-middle">
 
-{#        {{ dd(item) }}#}
+    {#    {{ dd(item) }} #}
     {#    {{ dd(item.productRootImages) }} #}
 
-{#    {% set photo = item.product_root_images %}#}
+    {% set photo = item.productRootImages %}
 
     {% set image_path = '/assets/img/blank.svg' %}
-    {% if item.product_image_ext is defined and item.product_image_ext is not null %}
-        {% set image_path = cdn_image_path(item.product_image, item.product_image_ext, item.product_image_cdn, 'small') %}
+    {% if photo.img_ext is defined and photo.img_ext is not null %}
+        {% set image_path = cdn_image_path(photo.img, photo.img_ext, photo.img_cdn, 'small') %}
     {% endif %}
 
     {# TODO поместить фото в нужную ячейку #}
@@ -60,21 +60,21 @@
     {#    </td> #}
 
 
-    <td class="text-start">
+    <td class="w-100">
         {#        <a href="{{ path('manufacture-part:admin.products.index', { id: item.id }) }}" #}
         {#           class="fw-bolder mb-1 text-decoration-none product-name"> #}
         {#            {{ item.number }} #}
         {#        </a> &nbsp; #}
 
-        {{ item.id }}
+        {{ item.manufactureApplicationId }}
 
         <div>
             {#            <small class="opacity-50 fw-normal">Категория:</small> &nbsp; <strong>{{ item.category_name }}</strong> #}
             &nbsp;
-            <small class="opacity-50 fw-normal">Производство:</small> &nbsp; <strong>{{ item.action_name }}</strong>
+            <small class="opacity-50 fw-normal">Производство:</small> &nbsp; <strong>{{ item.actionName }}</strong>
         </div>
         <div>
-            <small class="opacity-50 fw-normal">Ответственный:</small> &nbsp; <strong> {{ item.users_profile_username }}
+            <small class="opacity-50 fw-normal">Ответственный:</small> &nbsp; <strong> {{ item.UsersProfileUsername }}
         </div>
     </td>
 
@@ -82,15 +82,15 @@
     <td class="text-center">
         {#        {{ item.complete ? item.complete|trans({}, 'manufacture.complete') : 'Ничего не делать' }} #}
 
-        <div class="d-flex flex-column text-center" style="align-items: center;">
+        <div class="d-flex flex-column">
 
-            <div class="d-flex1 flex-column1 small gap-1 p-2 bg-cover lazy col-2 w-100_1 position-relative"
-                 style="height: 150px; width: 120px"
+            <div class="d-flex flex-column small gap-1 p-2 bg-cover lazy col-2 w-100 position-relative"
+                 style="height: 100px; width: 100px;"
                  data-bg="{{ image_path }}"
             ></div>
 
             <div class="card-body d-flex flex-column p-2">
-                {{ item.product_name }}
+                {{ item.productName }}
             </div>
 
 
@@ -98,7 +98,7 @@
     </td>
     <td class="text-center">
         {#        {{ manufacture_status(item.status) }} #}
-        {{ item.product_total }}
+        {{ item.productTotal }}
     </td>
 
     <td class="text-center">

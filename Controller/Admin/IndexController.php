@@ -80,7 +80,8 @@ final class IndexController extends AbstractController
 ////            ->forDeliveryType($opens ? $opens->getComplete() : false)
 //            ->findPaginator();
         $query = $allManufacturePartApplication
-            ->findAll();
+            ->search($search)
+            ->findPaginator();
 
         return $this->render(
             [

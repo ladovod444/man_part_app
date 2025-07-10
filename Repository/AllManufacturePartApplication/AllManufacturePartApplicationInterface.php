@@ -22,10 +22,14 @@
  */
 
 namespace BaksDev\Manufacture\Part\Application\Repository\AllManufacturePartApplication;
+use BaksDev\Core\Form\Search\SearchDTO;
+use BaksDev\Core\Services\Paginator\PaginatorInterface;
 use Generator;
 
 interface AllManufacturePartApplicationInterface
 {
     /** @return Generator|false Найти все результаты */
-    public function findAll(): false|Generator;
+//    public function findAll(): false|Generator;
+    public function search(SearchDTO $search): self;
+    public function findPaginator(): PaginatorInterface;
 }
