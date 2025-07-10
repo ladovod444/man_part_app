@@ -1,0 +1,8 @@
+admin:
+  success:
+      new: "Добавлена новая заявка"
+  application:
+    page:
+      new: "Создать производственную заявку"
+  page:
+    manufacture-application: "Список производственных заявок"
