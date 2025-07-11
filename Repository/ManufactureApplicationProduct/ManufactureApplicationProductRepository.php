@@ -7,12 +7,10 @@ use BaksDev\Manufacture\Part\Application\Entity\Event\ManufactureApplicationEven
 use BaksDev\Manufacture\Part\Application\Entity\ManufactureApplication;
 use BaksDev\Manufacture\Part\Application\Entity\Product\ManufactureApplicationProduct;
 use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
-use BaksDev\Manufacture\Part\Entity\Products\ManufacturePartProduct;
 use BaksDev\Products\Product\Type\Event\ProductEventUid;
 use BaksDev\Products\Product\Type\Offers\Id\ProductOfferUid;
 use BaksDev\Products\Product\Type\Offers\Variation\Id\ProductVariationUid;
 use Doctrine\DBAL\ParameterType;
-use Doctrine\DBAL\Types\IntegerType;
 
 class ManufactureApplicationProductRepository implements ManufactureApplicationProductInterface
 {
@@ -71,22 +69,14 @@ class ManufactureApplicationProductRepository implements ManufactureApplicationP
 
 
 //        dump($dbal->getSQL());   +
-        //        $dbal->analyze();
-
-        //        $dbal->
-
-
 
         return $dbal->fetchAssociative();
 
-//        dump($dbal->fetchAssociative());
-//        dd(1);
-//        $res = $dbal->fetchAssociative();
-//        return $res;
     }
 
-
-//    public function updateApplicationProduct(string|ProductEventUid $product): int|string {
+    /**
+     * Обновляем кол-во товара в производственной заявке
+     */
     public function updateApplicationProduct(string|ManufactureApplicationUid $id, int $updated_total): int|string {
         $dbal = $this->DBALQueryBuilder
             ->createQueryBuilder(self::class)
@@ -94,24 +84,12 @@ class ManufactureApplicationProductRepository implements ManufactureApplicationP
 
         $dbal->update(ManufactureApplicationProduct::class);
 
-        // TODO test
 
-        // TODO передвать $total
-
+        // Передаем измененнное кол-во
         $dbal
             ->set('total', ':total')
             ->setParameter('total', $updated_total, ParameterType::INTEGER);
 
-        //TEST
-        /*
-        $product = $product instanceof ProductEventUid ? $product : new ProductEventUid($product);
-        $dbal
-            ->where('product = :product')
-            ->setParameter('product', $product, ProductEventUid::TYPE);
-        */
-
-        // test
-//        $id = '0197f562-2566-7a1d-81e2-f2887d0d118f';
 
         $id = $id instanceof ManufactureApplicationUid ? $id : new ManufactureApplicationUid($id);
         $dbal
