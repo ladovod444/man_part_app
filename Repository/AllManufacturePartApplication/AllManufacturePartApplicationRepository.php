@@ -271,6 +271,11 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
 
         $dbal->allGroupByExclude();
 
+//        dd($dbal->fetchAllAssociative());
+
+
+//        dd($this->paginator->fetchAllAssociative($dbal)->getData());
+
         return $this->paginator->fetchAllAssociative($dbal);
 
     }

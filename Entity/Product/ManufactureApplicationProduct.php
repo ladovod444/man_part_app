@@ -58,6 +58,11 @@ class ManufactureApplicationProduct extends EntityEvent
     #[ORM\JoinColumn(name: 'event', referencedColumnName: "id")]
     private ManufactureApplicationEvent $event;
 
+//    public function getEvent(): ManufactureApplicationEvent
+//    {
+//        return $this->event;
+//    }
+
     /**
      * Идентификатор События!!! продукта
      */
@@ -65,6 +70,11 @@ class ManufactureApplicationProduct extends EntityEvent
     #[Assert\Uuid]
     #[ORM\Column(type: ProductEventUid::TYPE)]
     private ProductEventUid $product;
+
+    public function getProduct(): ProductEventUid
+    {
+        return $this->product;
+    }
 
     /**
      * Идентификатор торгового предложения
@@ -88,8 +98,7 @@ class ManufactureApplicationProduct extends EntityEvent
     #[ORM\Column(type: Types::INTEGER)]
     private int $total;
 
-
-    public function __construct(ManufactureApplicationEvent $event)
+    public function __construct(?ManufactureApplicationEvent $event)
     {
         $this->id = new ManufactureApplicationProductUid();
         $this->event = $event;
@@ -105,7 +114,11 @@ class ManufactureApplicationProduct extends EntityEvent
         return (string) $this->id;
     }
 
-
+    public function setTotal(int $total): self
+    {
+        $this->total = $total;
+        return $this;
+    }
 
 
     public function getDto($dto): mixed

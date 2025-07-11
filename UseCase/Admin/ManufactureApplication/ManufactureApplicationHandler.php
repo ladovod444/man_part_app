@@ -91,6 +91,8 @@ final class ManufactureApplicationHandler extends AbstractHandler
 
 
         /* Отправляем сообщение в шину */
+
+
         $this->messageDispatch
             //            ->addClearCacheOther('wildberries-manufacture')
             //            ->addClearCacheOther('wildberries-package')

@@ -50,6 +50,8 @@ final class ActionByMainRepository implements ActionByMainInterface
 
         $result = $dbal->fetchAssociative();
 
+//        $dbal->update(UsersTableActionsEvent::class);
+
         return new UsersTableActionsEventUid($result['id']);
     }
 }
