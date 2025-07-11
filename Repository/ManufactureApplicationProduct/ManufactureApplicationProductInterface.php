@@ -12,5 +12,5 @@ interface ManufactureApplicationProductInterface
     public function findApplicationProduct(string $product, string $offer, string $variation): array|false;
 
 //    public function updateApplicationProduct(string|ProductEventUid $product): int|string;
-    public function updateApplicationProduct(string|ManufactureApplicationUid $id): int|string;
+    public function updateApplicationProduct(string|ManufactureApplicationUid $id, int $updated_total): int|string;
 }

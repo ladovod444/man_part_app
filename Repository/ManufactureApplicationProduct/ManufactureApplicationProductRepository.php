@@ -44,6 +44,7 @@ class ManufactureApplicationProductRepository implements ManufactureApplicationP
             );
 
         $dbal
+            ->addSelect('manufacture_application_product.id as product_id')
             ->addSelect('manufacture_application_product.product as product_uid')
             ->addSelect('manufacture_application_product.offer as product_offer_uid')
             ->addSelect('manufacture_application_product.total as product_total')
@@ -53,6 +54,8 @@ class ManufactureApplicationProductRepository implements ManufactureApplicationP
                 'manufacture_application_product',
                 'manufacture_application_event.id = manufacture_application_product.event'
             );
+
+//        dump($dbal->fetchAssociative());
 
         $dbal->where('manufacture_application_product.product=:product')
             ->setParameter('product', $product, ProductEventUid::TYPE)
@@ -84,7 +87,7 @@ class ManufactureApplicationProductRepository implements ManufactureApplicationP
 
 
 //    public function updateApplicationProduct(string|ProductEventUid $product): int|string {
-    public function updateApplicationProduct(string|ManufactureApplicationUid $id): int|string {
+    public function updateApplicationProduct(string|ManufactureApplicationUid $id, int $updated_total): int|string {
         $dbal = $this->DBALQueryBuilder
             ->createQueryBuilder(self::class)
             ->bindLocal();
@@ -97,7 +100,7 @@ class ManufactureApplicationProductRepository implements ManufactureApplicationP
 
         $dbal
             ->set('total', ':total')
-            ->setParameter('total', 55, ParameterType::INTEGER);
+            ->setParameter('total', $updated_total, ParameterType::INTEGER);
 
         //TEST
         /*
