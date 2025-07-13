@@ -82,19 +82,31 @@ class ManufactureApplicationProductRepository implements ManufactureApplicationP
             ->createQueryBuilder(self::class)
             ->bindLocal();
 
-        $dbal->update(ManufactureApplicationProduct::class);
+
+        // TODO soft delete ??
+        // удалить заявку если кол-во <= 0
+        if ($updated_total <= 0) {
+            $dbal->delete(ManufactureApplicationProduct::class);
+
+            $dbal
+                ->where('id = :id')
+                ->setParameter('id', $id, ManufactureApplicationUid::TYPE);
+        }
+
+        else
+        {
+            $dbal->update(ManufactureApplicationProduct::class);
+            // Передаем измененнное кол-во
+            $dbal
+                ->set('total', ':total')
+                ->setParameter('total', $updated_total, ParameterType::INTEGER);
 
 
-        // Передаем измененнное кол-во
-        $dbal
-            ->set('total', ':total')
-            ->setParameter('total', $updated_total, ParameterType::INTEGER);
-
-
-        $id = $id instanceof ManufactureApplicationUid ? $id : new ManufactureApplicationUid($id);
-        $dbal
-            ->where('id = :id')
-            ->setParameter('id', $id, ManufactureApplicationUid::TYPE);
+            $id = $id instanceof ManufactureApplicationUid ? $id : new ManufactureApplicationUid($id);
+            $dbal
+                ->where('id = :id')
+                ->setParameter('id', $id, ManufactureApplicationUid::TYPE);
+        }
 
        return $dbal->executeStatement();
     }

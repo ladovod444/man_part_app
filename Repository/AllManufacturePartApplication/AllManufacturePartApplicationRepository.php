@@ -83,6 +83,7 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
 
             ->addSelect('manufacture_application_product.product as product_uid')
             ->addSelect('manufacture_application_product.offer as product_offer_uid')
+            ->addSelect('manufacture_application_product.variation as product_variation_uid')
             ->addSelect('manufacture_application_product.total as product_total')
             ->leftJoin(
                 'manufacture_application_event',
