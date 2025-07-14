@@ -29,6 +29,12 @@ use BaksDev\Core\Services\Paginator\PaginatorInterface;
 use BaksDev\Manufacture\Part\Application\Entity\Event\ManufactureApplicationEvent;
 use BaksDev\Manufacture\Part\Application\Entity\ManufactureApplication;
 use BaksDev\Manufacture\Part\Application\Entity\Product\ManufactureApplicationProduct;
+use BaksDev\Products\Category\Entity\Offers\CategoryProductOffers;
+use BaksDev\Products\Category\Entity\Offers\Trans\CategoryProductOffersTrans;
+use BaksDev\Products\Category\Entity\Offers\Variation\CategoryProductVariation;
+use BaksDev\Products\Category\Entity\Offers\Variation\Modification\CategoryProductModification;
+use BaksDev\Products\Category\Entity\Offers\Variation\Modification\Trans\CategoryProductModificationTrans;
+use BaksDev\Products\Category\Entity\Offers\Variation\Trans\CategoryProductVariationTrans;
 use BaksDev\Products\Product\Entity\Offers\Image\ProductOfferImage;
 use BaksDev\Products\Product\Entity\Offers\ProductOffer;
 use BaksDev\Products\Product\Entity\Offers\Variation\Image\ProductVariationImage;
@@ -82,8 +88,8 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
         $dbal
 
             ->addSelect('manufacture_application_product.product as product_uid')
-            ->addSelect('manufacture_application_product.offer as product_offer_uid')
-            ->addSelect('manufacture_application_product.variation as product_variation_uid')
+//            ->addSelect('manufacture_application_product.offer as product_offer_uid')
+//            ->addSelect('manufacture_application_product.variation as product_variation_uid')
             ->addSelect('manufacture_application_product.total as product_total')
             ->leftJoin(
                 'manufacture_application_event',
@@ -102,27 +108,125 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
             );
 
 
+        // Торговое предложение
 
-        $dbal->leftJoin(
+        $dbal
+            ->addSelect('product_offer.id as product_offer_uid')
+            ->addSelect('product_offer.value as product_offer_value')
+            ->addSelect('product_offer.postfix as product_offer_postfix')
+            ->leftJoin(
             'manufacture_application_product',
             ProductOffer::class,
             'product_offer',
-            'product_offer.event = manufacture_application_product.product',
+//            'product_offer.event = manufacture_application_product.product',
+                'product_offer.id = manufacture_application_product.offer OR product_offer.id IS NULL'
         );
 
-        $dbal->leftJoin(
-            'product_offer',
-            ProductVariation::class,
-            'product_variation',
-            'product_variation.offer = product_offer.id',
-        );
+        /* Получаем тип торгового предложения */
+        $dbal
+            ->addSelect('category_offer.reference AS product_offer_reference')
+            ->leftJoin(
+                'product_offer',
+                CategoryProductOffers::class,
+                'category_offer',
+                'category_offer.id = product_offer.category_offer'
+            );
 
-        $dbal->leftJoin(
-            'product_variation',
-            ProductModification::class,
-            'product_modification',
-            'product_modification.variation = product_variation.id',
-        );
+        /* Получаем название торгового предложения */
+        $dbal
+            ->addSelect('category_offer_trans.name as product_offer_name')
+            ->addSelect('category_offer_trans.postfix as product_offer_name_postfix')
+            ->leftJoin(
+                'category_offer',
+                CategoryProductOffersTrans::class,
+                'category_offer_trans',
+                'category_offer_trans.offer = category_offer.id AND category_offer_trans.local = :local'
+            );
+
+
+        /* Множественные варианты торгового предложения */
+        $dbal
+            ->addSelect('product_variation.id as product_variation_uid')
+            ->addSelect('product_variation.value as product_variation_value')
+            ->addSelect('product_variation.postfix as product_variation_postfix')
+            ->leftJoin(
+                'manufacture_application_product',
+                ProductVariation::class,
+                'product_variation',
+                'product_variation.id = manufacture_application_product.variation OR product_variation.id IS NULL '
+            );
+//            ->leftJoin(
+//            'product_offer',
+//            ProductVariation::class,
+//            'product_variation',
+//            'product_variation.offer = product_offer.id',
+//        );
+
+        /* Получаем тип множественного варианта */
+        $dbal
+            ->addSelect('category_variation.reference as product_variation_reference')
+            ->leftJoin(
+                'product_variation',
+                CategoryProductVariation::class,
+                'category_variation',
+                'category_variation.id = product_variation.category_variation'
+            );
+
+        /* Получаем название множественного варианта */
+        $dbal
+            ->addSelect('category_variation_trans.name as product_variation_name')
+            ->addSelect('category_variation_trans.postfix as product_variation_name_postfix')
+            ->leftJoin(
+                'category_variation',
+                CategoryProductVariationTrans::class,
+                'category_variation_trans',
+                'category_variation_trans.variation = category_variation.id AND category_variation_trans.local = :local'
+            );
+
+
+
+
+
+//        $dbal->leftJoin(
+//            'product_variation',
+//            ProductModification::class,
+//            'product_modification',
+//            'product_modification.variation = product_variation.id',
+//        );
+
+        /* Модификация множественного варианта торгового предложения */
+
+        $dbal
+            ->addSelect('product_modification.id as product_modification_uid')
+            ->addSelect('product_modification.value as product_modification_value')
+            ->addSelect('product_modification.postfix as product_modification_postfix')
+            ->leftJoin(
+                'manufacture_application_product',
+                ProductModification::class,
+                'product_modification',
+                'product_modification.id = manufacture_application_product.modification OR product_modification.id IS NULL '
+            );
+
+        /* Получаем тип модификации множественного варианта */
+        $dbal
+            ->addSelect('category_modification.reference as product_modification_reference')
+            ->leftJoin(
+                'product_modification',
+                CategoryProductModification::class,
+                'category_modification',
+                'category_modification.id = product_modification.category_modification'
+            );
+
+        /* Получаем название типа модификации */
+        $dbal
+            ->addSelect('category_modification_trans.name as product_modification_name')
+            ->addSelect('category_modification_trans.postfix as product_modification_name_postfix')
+            ->leftJoin(
+                'category_modification',
+                CategoryProductModificationTrans::class,
+                'category_modification_trans',
+                'category_modification_trans.modification = category_modification.id AND category_modification_trans.local = :local'
+            );
 
 
         // Фото продукта

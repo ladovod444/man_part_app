@@ -29,6 +29,7 @@ use BaksDev\Manufacture\Part\Application\Type\Product\ManufactureApplicationProd
 use BaksDev\Products\Product\Type\Event\ProductEventUid;
 use BaksDev\Products\Product\Type\Offers\Id\ProductOfferUid;
 use BaksDev\Products\Product\Type\Offers\Variation\Id\ProductVariationUid;
+use BaksDev\Products\Product\Type\Offers\Variation\Modification\Id\ProductModificationUid;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
@@ -89,6 +90,13 @@ class ManufactureApplicationProduct extends EntityEvent
     #[Assert\Uuid]
     #[ORM\Column(type: ProductVariationUid::TYPE, nullable: true)]
     private ?ProductVariationUid $variation;
+
+    /**
+     * Модификация множественного варианта торгового предложения
+     */
+    #[Assert\Uuid]
+    #[ORM\Column(type: ProductModificationUid::TYPE, nullable: true)]
+    private ?ProductModificationUid $modification;
 
     /**
      * Количество в заявке

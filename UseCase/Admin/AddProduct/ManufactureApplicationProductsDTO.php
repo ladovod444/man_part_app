@@ -67,7 +67,7 @@ final class ManufactureApplicationProductsDTO implements ManufactureApplicationP
      * Идентификатор модификации множественного варианта торгового предложения
      */
     #[Assert\Uuid]
-//    private ?ProductModificationUid $modification = null;
+    private ?ProductModificationUid $modification = null;
 
     /**
      * Количество данного товара в заявке
@@ -112,15 +112,15 @@ final class ManufactureApplicationProductsDTO implements ManufactureApplicationP
             $identifier = $this->getOffer();
         }
 
-//        if($this->getVariation())
-//        {
-//            $identifier = $this->getVariation();
-//        }
-//
-//        if($this->getModification())
-//        {
-//            $identifier = $this->getModification();
-//        }
+        if($this->getVariation())
+        {
+            $identifier = $this->getVariation();
+        }
+
+        if($this->getModification())
+        {
+            $identifier = $this->getModification();
+        }
 
         return (string) $identifier;
     }
@@ -173,16 +173,16 @@ final class ManufactureApplicationProductsDTO implements ManufactureApplicationP
      * Идентификатор модификации множественного варианта торгового предложения
      */
 
-//    public function getModification(): ?ProductModificationUid
-//    {
-//        return $this->modification;
-//    }
-//
-//    public function setModification(?ProductModificationUid $modification): self
-//    {
-//        $this->modification = $modification;
-//        return $this;
-//    }
+    public function getModification(): ?ProductModificationUid
+    {
+        return $this->modification;
+    }
+
+    public function setModification(?ProductModificationUid $modification): self
+    {
+        $this->modification = $modification;
+        return $this;
+    }
 
     public function setProfile(UserProfileUid $profile)
     {

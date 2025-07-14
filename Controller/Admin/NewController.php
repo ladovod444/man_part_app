@@ -69,8 +69,8 @@ final class NewController extends AbstractController
         /**  Получить массивы UIDs по выбранным продуктам */
         $events = [];
         $offers = [];
-//        $variations = [];
-//        $modifications = [];
+        $variations = [];
+        $modifications = [];
 
         /** @var ManufactureApplicationProductsDTO $ManufactureApplicationProductDTO */
         foreach($ManufactureApplicationDTO->getApplicationProductFormData() as $key => $ManufactureApplicationProductDTO)
@@ -80,7 +80,7 @@ final class NewController extends AbstractController
             $events[$key] = $ManufactureApplicationProductDTO->getProduct();
             $offers[$key] = $ManufactureApplicationProductDTO->getOffer();
             $variations[$key] = $ManufactureApplicationProductDTO->getVariation();
-//            $modifications[$key] = $ManufacturePartProductDTO->getModification();
+            $modifications[$key] = $ManufactureApplicationProductDTO->getModification();
 
         }
 
@@ -109,7 +109,7 @@ final class NewController extends AbstractController
             ->events($events)
             ->offers($offers)
             ->variations($variations)
-//            ->modifications($modifications)
+            ->modifications($modifications)
             ->toArray();
 
         return $this->render([

@@ -28,7 +28,10 @@ use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
 use BaksDev\Products\Product\Type\Event\ProductEventUid;
 use BaksDev\Products\Product\Type\Id\ProductUid;
 use BaksDev\Products\Product\Type\Offers\Id\ProductOfferUid;
+use BaksDev\Products\Product\Type\Offers\Variation\ConstId\ProductVariationConst;
 use BaksDev\Products\Product\Type\Offers\Variation\Id\ProductVariationUid;
+use BaksDev\Products\Product\Type\Offers\Variation\Modification\ConstId\ProductModificationConst;
+use BaksDev\Products\Product\Type\Offers\Variation\Modification\Id\ProductModificationUid;
 
 class AllManufacturePartApplicationResult
 {
@@ -40,6 +43,26 @@ class AllManufacturePartApplicationResult
         private string|null $product_offer_uid,
 
 //        private string|null $product_variation_uid,
+
+        private ?string $product_offer_value,
+        private ?string $product_offer_postfix,
+        private ?string $product_offer_reference,
+        private ?string $product_offer_name,
+        private ?string $product_offer_name_postfix,
+
+        private ?string $product_variation_uid,
+        private ?string $product_variation_value,
+        private ?string $product_variation_postfix,
+        private ?string $product_variation_reference,
+        private ?string $product_variation_name,
+        private ?string $product_variation_name_postfix,
+
+        private ?string $product_modification_uid,
+        private ?string $product_modification_value,
+        private ?string $product_modification_postfix,
+        private ?string $product_modification_reference,
+        private ?string $product_modification_name,
+        private ?string $product_modification_name_postfix,
 
         private string|null $action_name,
 
@@ -104,7 +127,104 @@ class AllManufacturePartApplicationResult
         return new ProductOfferUid($this->product_offer_uid);
     }
 
-//    public function getProductVariationUid(): ?ProductVariationUid
+    public function getProductOfferValue(): ?string
+    {
+        return $this->product_offer_value;
+    }
+
+    public function getProductOfferPostfix(): ?string
+    {
+        return $this->product_offer_postfix;
+    }
+
+    public function getProductOfferReference(): ?string
+    {
+        return $this->product_offer_reference;
+    }
+
+    public function getProductOfferName(): ?string
+    {
+        return $this->product_offer_name;
+    }
+
+    /**
+     * ProductOfferNamePostfix
+     */
+    public function getProductOfferNamePostfix(): ?string
+    {
+        return $this->product_offer_name_postfix;
+    }
+
+    /**
+     * ProductVariation
+     */
+
+    public function getProductVariationId(): ProductVariationUid|false
+    {
+        return $this->product_variation_uid ? new ProductVariationUid($this->product_variation_uid) : false;
+    }
+
+    public function getProductVariationValue(): ?string
+    {
+        return $this->product_variation_value;
+    }
+
+    public function getProductVariationPostfix(): ?string
+    {
+        return $this->product_variation_postfix;
+    }
+
+    public function getProductVariationReference(): ?string
+    {
+        return $this->product_variation_reference;
+    }
+
+    public function getProductVariationName(): ?string
+    {
+        return $this->product_variation_name;
+    }
+
+    public function getProductVariationNamePostfix(): ?string
+    {
+        return $this->product_variation_name_postfix;
+    }
+
+
+    /**
+     * ProductModification
+     */
+
+    public function getProductModificationId(): ProductModificationUid|false
+    {
+        return $this->product_modification_uid ? new ProductModificationUid($this->product_modification_uid) : false;
+    }
+
+    public function getProductModificationValue(): ?string
+    {
+        return $this->product_modification_value;
+    }
+
+    public function getProductModificationPostfix(): ?string
+    {
+        return $this->product_modification_postfix;
+    }
+
+    public function getProductModificationReference(): ?string
+    {
+        return $this->product_modification_reference;
+    }
+
+    public function getProductModificationName(): ?string
+    {
+        return $this->product_modification_name;
+    }
+
+    public function getProductModificationNamePostfix(): ?string
+    {
+        return $this->product_modification_name_postfix;
+    }
+
+    //    public function getProductVariationUid(): ?ProductVariationUid
 //    {
 //        if(is_null($this->product_variation_uid))
 //        {

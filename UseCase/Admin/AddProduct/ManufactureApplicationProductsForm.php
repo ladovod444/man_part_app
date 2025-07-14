@@ -88,18 +88,18 @@ final class ManufactureApplicationProductsForm extends AbstractType
         );
 //
 //
-//        $builder->add('modification', HiddenType::class);
-//
-//        $builder->get('modification')->addModelTransformer(
-//            new CallbackTransformer(
-//                function($modification) {
-//                    return $modification instanceof ProductModificationUid ? $modification->getValue() : $modification;
-//                },
-//                function($modification) {
-//                    return $modification ? new ProductModificationUid($modification) : null;
-//                }
-//            )
-//        );
+        $builder->add('modification', HiddenType::class);
+
+        $builder->get('modification')->addModelTransformer(
+            new CallbackTransformer(
+                function($modification) {
+                    return $modification instanceof ProductModificationUid ? $modification->getValue() : $modification;
+                },
+                function($modification) {
+                    return $modification ? new ProductModificationUid($modification) : null;
+                }
+            )
+        );
 
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event): void {
