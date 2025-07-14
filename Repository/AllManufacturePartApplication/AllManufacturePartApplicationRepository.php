@@ -35,6 +35,7 @@ use BaksDev\Products\Category\Entity\Offers\Variation\CategoryProductVariation;
 use BaksDev\Products\Category\Entity\Offers\Variation\Modification\CategoryProductModification;
 use BaksDev\Products\Category\Entity\Offers\Variation\Modification\Trans\CategoryProductModificationTrans;
 use BaksDev\Products\Category\Entity\Offers\Variation\Trans\CategoryProductVariationTrans;
+use BaksDev\Products\Product\Entity\Info\ProductInfo;
 use BaksDev\Products\Product\Entity\Offers\Image\ProductOfferImage;
 use BaksDev\Products\Product\Entity\Offers\ProductOffer;
 use BaksDev\Products\Product\Entity\Offers\Variation\Image\ProductVariationImage;
@@ -105,6 +106,15 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
                 ProductTrans::class,
                 'product_trans',
                 'product_trans.event = manufacture_application_product.product AND product_trans.local = :local',
+            );
+
+        $dbal
+            ->addSelect('product_info.article')
+            ->join(
+                'manufacture_application_product',
+                ProductInfo::class,
+                'product_info',
+                'product_info.event = manufacture_application_product.product'
             );
 
 
@@ -228,6 +238,16 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
                 'category_modification_trans.modification = category_modification.id AND category_modification_trans.local = :local'
             );
 
+        /** Артикул продукта */
+
+        $dbal->addSelect('
+            COALESCE(
+                product_modification.article,
+                product_variation.article,
+                product_offer.article,
+                product_info.article
+            ) AS product_article
+		');
 
         // Фото продукта
 
@@ -362,13 +382,12 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
                 ->addSearchEqualUid('manufacture_application_product.id')
                 ->addSearchEqualUid('product_variation.id')
                 ->addSearchEqualUid('product_modification.id')
-                ->addSearchLike('product_trans.name');
+//                ->addSearchLike('product_trans.name');
                 //->addSearchLike('product_trans.preview')
-//                ->addSearchLike('product_info.article')
-//                ->addSearchLike('product_offer.article')
-//                ->addSearchLike('product_modification.article')
-//                ->addSearchLike('product_modification.article')
-//                ->addSearchLike('product_variation.article');
+                ->addSearchLike('product_info.article')
+                ->addSearchLike('product_offer.article')
+                ->addSearchLike('product_modification.article')
+                ->addSearchLike('product_variation.article');
         }
 
         $dbal->addOrderBy('manufacture_application_event.priority DESC');
