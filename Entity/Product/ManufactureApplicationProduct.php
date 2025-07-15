@@ -99,6 +99,14 @@ class ManufactureApplicationProduct extends EntityEvent
     #[ORM\Column(type: Types::INTEGER)]
     private int $total;
 
+    /**
+     * Количество завершенных
+     */
+    #[Assert\NotBlank]
+    #[Assert\Range(min: 1)]
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private int $total_completed;
+
     public function __construct(?ManufactureApplicationEvent $event)
     {
         $this->id = new ManufactureApplicationProductUid();
@@ -118,6 +126,17 @@ class ManufactureApplicationProduct extends EntityEvent
     public function setTotal(int $total): self
     {
         $this->total = $total;
+        return $this;
+    }
+
+    public function getTotalCompleted(): int
+    {
+        return $this->total_completed;
+    }
+
+    public function setTotalCompleted(int $total_completed): self
+    {
+        $this->total_completed = $total_completed;
         return $this;
     }
 

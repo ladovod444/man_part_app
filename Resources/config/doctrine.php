@@ -31,6 +31,8 @@ use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationType;
 use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
 use BaksDev\Manufacture\Part\Application\Type\Product\ManufactureApplicationProductType;
 use BaksDev\Manufacture\Part\Application\Type\Product\ManufactureApplicationProductUid;
+use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus;
+use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatusType;
 use BaksDev\Manufacture\Part\Type\Status\ManufacturePartStatus;
 use BaksDev\Manufacture\Part\Type\Status\ManufacturePartStatusType;
 use Symfony\Config\DoctrineConfig;
@@ -45,6 +47,8 @@ return static function(ContainerConfigurator $container, DoctrineConfig $doctrin
 //    $doctrine->dbal()->type(ManufacturePartProductUid::TYPE)->class(ManufacturePartProductType::class);
 
     $doctrine->dbal()->type(ManufactureApplicationProductUid::TYPE)->class(ManufactureApplicationProductType::class);
+
+    $doctrine->dbal()->type(ManufactureApplicationStatus::TYPE)->class(ManufactureApplicationStatusType::class);
 
     $emDefault = $doctrine->orm()->entityManager('default')->autoMapping(true);
 

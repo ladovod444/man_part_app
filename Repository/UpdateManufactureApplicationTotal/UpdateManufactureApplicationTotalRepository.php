@@ -49,6 +49,13 @@ class UpdateManufactureApplicationTotalRepository implements UpdateManufactureAp
         {
             $dbal->delete(ManufactureApplicationProduct::class);
 
+//            // TODO delete event, appl.
+//
+//            status - new и complete
+//            tags
+
+           // если заявка < то задать КОЛ-во заявке
+
             $dbal
                 ->where('id = :id')
                 ->setParameter('id', $id, ManufactureApplicationUid::TYPE);
@@ -57,7 +64,7 @@ class UpdateManufactureApplicationTotalRepository implements UpdateManufactureAp
         else
         {
             $dbal->update(ManufactureApplicationProduct::class);
-            // Передаем измененнное кол-во
+            // Передаем измененное кол-во
             $dbal
                 ->set('total', ':total')
                 ->setParameter('total', $updated_total, ParameterType::INTEGER);

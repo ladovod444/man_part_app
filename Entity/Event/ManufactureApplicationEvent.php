@@ -26,9 +26,12 @@ namespace BaksDev\Manufacture\Part\Application\Entity\Event;
 use BaksDev\Core\Entity\EntityEvent;
 use BaksDev\Manufacture\Part\Application\Entity\ManufactureApplication;
 use BaksDev\Manufacture\Part\Application\Entity\Product\ManufactureApplicationProduct;
+use BaksDev\Manufacture\Part\Application\Entity\Product\ManufactureApplicationProductInterface;
 use BaksDev\Manufacture\Part\Application\Type\Event\ManufactureApplicationEventUid;
 use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
 
+use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus;
+use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus\ManufactureApplicationStatusNew;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Users\UsersTable\Type\Actions\Event\UsersTableActionsEventUid;
 use Doctrine\ORM\Mapping as ORM;
@@ -98,6 +101,11 @@ class ManufactureApplicationEvent extends EntityEvent
     #[ORM\OneToOne(targetEntity: ManufactureApplicationProduct::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private Collection $product;
 
+    /** Статус заказа */
+    #[Assert\NotBlank]
+    #[ORM\Column(type: ManufactureApplicationStatus::TYPE)]
+    private ManufactureApplicationStatus $status;
+
     public function setProduct(Collection $product): self
     {
         $this->product = $product;
@@ -107,6 +115,8 @@ class ManufactureApplicationEvent extends EntityEvent
 
     public function __construct() {
         $this->id = new ManufactureApplicationEventUid();
+
+        $this->status = new ManufactureApplicationStatus(new ManufactureApplicationStatusNew());
     }
 
     public function __clone()
@@ -151,6 +161,20 @@ class ManufactureApplicationEvent extends EntityEvent
     public function getProduct(): Collection
     {
         return $this->product;
+    }
+
+    /**
+     * @deprecated  используйте метод isStatusEquals
+     * @see self::isStatusEquals
+     */
+    public function getStatus(): ManufactureApplicationStatus
+    {
+        return $this->status;
+    }
+
+    public function isStatusEquals(mixed $status): bool
+    {
+        return $this->status->equals($status);
     }
 
 }
