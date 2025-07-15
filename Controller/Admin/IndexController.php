@@ -14,6 +14,7 @@ use BaksDev\Manufacture\Part\Application\Repository\AllManufacturePartApplicatio
 use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
 use BaksDev\Manufacture\Part\Repository\AllProducts\AllManufactureProductsInterface;
 use BaksDev\Manufacture\Part\Repository\ManufacturePartChoice\ManufacturePartChoiceInterface;
+use BaksDev\Manufacture\Part\Repository\OpenManufacturePart\OpenManufacturePartInterface;
 use BaksDev\Manufacture\Part\UseCase\Admin\AddProduct\ManufactureSelectionPartProductsForm;
 use BaksDev\Products\Product\Forms\ProductFilter\Admin\ProductFilterDTO;
 use BaksDev\Products\Product\Forms\ProductFilter\Admin\ProductFilterForm;
@@ -31,9 +32,9 @@ final class IndexController extends AbstractController
     #[Route('/admin/manufacture/application/{page<\d+>}', name: 'admin.index', methods: ['GET', 'POST'])]
     public function index(
         Request $request,
-//        AllManufactureProductsInterface $allManufactureProducts,
         AllManufacturePartApplicationInterface $allManufacturePartApplication,
         TokenUserGenerator $tokenUserGenerator,
+        OpenManufacturePartInterface $openManufacturePart,
         int $page = 0,
     ): Response
     {
@@ -43,10 +44,6 @@ final class IndexController extends AbstractController
         $searchForm = $this->createForm(SearchForm::class, $search);
         $searchForm->handleRequest($request);
 
-        // TODO !!!
-        // ПЕРЕДЕЛАТЬ на список заявок
-
-//        dd(1);
 
 
         // Фильтр
@@ -55,6 +52,9 @@ final class IndexController extends AbstractController
         // $filterForm->handleRequest($request);
 
 
+        $opens = $openManufacturePart
+            ->forFixed($this->getCurrentProfileUid())
+            ->find();
 
         /**
          * Фильтр продукции
@@ -74,11 +74,7 @@ final class IndexController extends AbstractController
         /**
          * Список продукции
          */
-//        $query = $allManufactureProducts
-//            ->search($search)
-//            ->filter($filter)
-////            ->forDeliveryType($opens ? $opens->getComplete() : false)
-//            ->findPaginator();
+
         $query = $allManufacturePartApplication
             ->search($search)
             ->findPaginator();
@@ -90,8 +86,8 @@ final class IndexController extends AbstractController
 //                'filter' => $filterForm->createView(),
                 'current_profile' => $this->getCurrentProfileUid(),
                 'token' => $tokenUserGenerator->generate($this->getUsr()),
-                // todo
-//                'add_selected_product_form_name' => $this->createForm(type: ManufactureSelectionPartProductsForm::class)->getName(),
+                'add_selected_product_form_name' => $this->createForm(type: ManufactureSelectionPartProductsForm::class)->getName(),
+                'opens' => $opens,
             ]
         );
     }

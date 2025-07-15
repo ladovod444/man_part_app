@@ -2,7 +2,7 @@
 
 <div id="{{ identifier }}" class="col-2 p-1 ">
 
-{#    {% set priority_bg = item.priority ? '#fff3cd' : '#fff' %}#}
+    {#    {% set priority_bg = item.priority ? '#fff3cd' : '#fff' %} #}
     {% set priority_style = item.priority ? 'style=border-color:#bb2d3b;border-width:2px;' %}
 
     {# <tr class="vertical-middle" style="border-bottom: 5px solid {{ priority_border }};"> #}
@@ -17,19 +17,19 @@
 
             <div class="card-body small p-2">
                 <div class="d-flex align-items-center small">
-{#                    <div class="w-100 d-flex gap-3 align-items-center">#}
-{#                        <div class="h5">#}
-{#                            <input id="check-01978bde-7cd3-7c80-977c-18afa854da6d" type="checkbox"#}
-{#                                               class="form-check-input add-all-to-production btn-outline-danger"#}
-{#                                               data-formname="manufacture_selection_part_products_form"#}
-{#                                               data-product="01978bde-7cc4-776d-bc28-4afb423c8df5"#}
-{#                                               data-offer="01978bde-7cd2-7ded-ac2c-437ba1c39160"#}
-{#                                               data-variation="01978bde-7cd2-7ded-ac2c-437ba1ee58c0"#}
-{#                                               data-modification="01978bde-7cd3-7c80-977c-18afa854da6d" data-total="100"#}
-{#                                               title="Выбрать данный товар"></div>#}
-{#                        <label for="check-01978bde-7cd3-7c80-977c-18afa854da6d"></label>#}
-{#                    </div>#}
-{#                    <div class="text-muted flex-shrink-1"><span class="badge text-bg-secondary">Triangle</span></div>#}
+                    {#                    <div class="w-100 d-flex gap-3 align-items-center"> #}
+                    {#                        <div class="h5"> #}
+                    {#                            <input id="check-01978bde-7cd3-7c80-977c-18afa854da6d" type="checkbox" #}
+                    {#                                               class="form-check-input add-all-to-production btn-outline-danger" #}
+                    {#                                               data-formname="manufacture_selection_part_products_form" #}
+                    {#                                               data-product="01978bde-7cc4-776d-bc28-4afb423c8df5" #}
+                    {#                                               data-offer="01978bde-7cd2-7ded-ac2c-437ba1c39160" #}
+                    {#                                               data-variation="01978bde-7cd2-7ded-ac2c-437ba1ee58c0" #}
+                    {#                                               data-modification="01978bde-7cd3-7c80-977c-18afa854da6d" data-total="100" #}
+                    {#                                               title="Выбрать данный товар"></div> #}
+                    {#                        <label for="check-01978bde-7cd3-7c80-977c-18afa854da6d"></label> #}
+                    {#                    </div> #}
+                    {#                    <div class="text-muted flex-shrink-1"><span class="badge text-bg-secondary">Triangle</span></div> #}
                 </div>
             </div>
 
@@ -45,9 +45,9 @@
                 {#            {{ item.number }} #}
                 {#        </a> &nbsp; #}
 
-{#                {{ item.id }}#}
+                {#                {{ item.id }} #}
 
-                    <span class="fw-bolder mb-1 text-dark text-decoration-none product-name">{{ item.product_name }}</span>
+                <span class="fw-bolder mb-1 text-dark text-decoration-none product-name">{{ item.product_name }}</span>
 
 
                 <div class="text-muted fw-bolder">
@@ -82,7 +82,60 @@
                     <strong> {{ item.product_total }}</strong>
                 </div>
 
-                {{ item.product_article }}
+
+                <div class="d-flex justify-content-between align-items-center small">
+
+                    <div class="mb-1">{{ item.product_article }}</div>
+
+
+                    {% if is_granted('ROLE_MANUFACTURE_PART_ADD') or  is_granted('ROLE_ADMIN') %}
+
+                        {% if opens %}
+
+                            <span
+                                    role="tooltip"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    data-bs-delay='{"show":600,"hide":100}'
+{#                        title='{{ item.exist_manufacture ? 'Продукция на производстве' : 'Добавить в партию производства' }}' #}
+                        title='Добавить в партию производства'
+                            >
+
+                        {# Для возможности открытия модвльного окна в script.js через POST добавлены data-атрибуты #}
+                                {# data-formname - для хранения отправляемых данных  #}
+                                {# data-method - опредеяем метод METHOD для указания в request.open  #}
+                        <a href="{{ path('manufacture-part:admin.selected-products.add') }}"
+
+{#                           class="btn btn-sm {{ item.exist_manufacture ? 'btn-secondary' : 'btn-primary' }} modal-link disabled" #}
+                           class="btn btn-sm btn-primary modal-link disabled"
+                           data-bs-toggle="modal"
+                           data-bs-target="#modal"
+
+                           data-method="post"
+                           data-formname="{{ add_selected_product_form_name }}"
+                           data-product="{{ item.product_uid }}"
+                           data-offer="{{ item.product_offer_uid }}"
+                           data-variation="{{ item.product_variation_uid }}"
+                           data-modification="{{ item.product_modification_uid }}"
+                           data-collection-form="product_form_data"
+                           data-total="100"
+
+                           data-post-class="add-one-to-production"
+
+                        >
+                           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                class="bi bi-folder-plus" viewBox="0 0 16 16">
+                              <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2Zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672Z"/>
+                              <path d="M13.5 9a.5.5 0 0 1 .5.5V11h1.5a.5.5 0 1 1 0 1H14v1.5a.5.5 0 1 1-1 0V12h-1.5a.5.5 0 0 1 0-1H13V9.5a.5.5 0 0 1 .5-.5Z"/>
+                            </svg>
+                        </a>
+
+                    </span>
+
+                        {% endif %}
+                    {% endif %}
+                </div>
+
 
             </div>
 
