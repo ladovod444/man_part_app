@@ -75,7 +75,7 @@ final class ManufactureApplicationDTO /*implements ManufactureApplicationEventIn
     /**
      * Идентификатор процесса производства
      */
-//    private UsersTableActionsEventUid $action;
+    //    private UsersTableActionsEventUid $action;
 
     #[Assert\NotBlank]
     #[Assert\Uuid]
@@ -88,7 +88,7 @@ final class ManufactureApplicationDTO /*implements ManufactureApplicationEventIn
         $this->application_product_form_data = new ArrayCollection();
         $this->fixed = $profile;
 
-        $action = $actionByMain->findUsersTableActionByMain(new ManufactureApplicationUid(ManufactureApplicationUid::ACTION_ID) );
+        $action = $actionByMain->findUsersTableActionByMain(new ManufactureApplicationUid(ManufactureApplicationUid::ACTION_ID));
         $this->action = $action;
 
     }
@@ -100,7 +100,7 @@ final class ManufactureApplicationDTO /*implements ManufactureApplicationEventIn
 
     public function addApplicationProductFormData(ManufactureApplicationProductsDTO $product): self
     {
-//        $product->setProfile($this->profile);
+        //        $product->setProfile($this->profile);
 
         $this->application_product_form_data->add($product);
 

@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace BaksDev\Manufacture\Part\Application\Type\Product;
 
-use App\Kernel;
 use BaksDev\Core\Type\UidType\Uid;
 use Symfony\Component\Uid\AbstractUid;
 

@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace BaksDev\Manufacture\Part\Application\Type\Id;
 
-
 use BaksDev\Core\Type\UidType\UidType;
 
 final class ManufactureApplicationType extends UidType

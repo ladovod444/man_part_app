@@ -72,7 +72,7 @@ final class ManufactureApplicationProductsForm extends AbstractType
             )
         );
 
-//
+        //
         $builder->add('variation', HiddenType::class);
 
         $builder->get('variation')->addModelTransformer(
@@ -85,8 +85,8 @@ final class ManufactureApplicationProductsForm extends AbstractType
                 }
             )
         );
-//
-//
+        //
+        //
         $builder->add('modification', HiddenType::class);
 
         $builder->get('modification')->addModelTransformer(
@@ -127,18 +127,6 @@ final class ManufactureApplicationProductsForm extends AbstractType
             ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary text-nowrap']]
         );
 
-        /** Чтобы скрывать submit в форме добавления selection товаров */
-//        $show_submit = $builder->getOption('show_submit');
-
-        /** Если в ManufactureSelectionPartProductsForm в entry_options задана эта опция со значением true, то скроем этот элемент */
-//        if ($show_submit)
-//        {
-//            $builder->add(
-//                'manufacture_part_products',
-//                SubmitType::class,
-//                ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary text-nowrap']]
-//            );
-//        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -147,7 +135,6 @@ final class ManufactureApplicationProductsForm extends AbstractType
             'data_class' => ManufactureApplicationProductsDTO::class,
             'method' => 'POST',
             'attr' => ['class' => 'w-100'],
-//            'show_submit' => true,
         ]);
     }
 }

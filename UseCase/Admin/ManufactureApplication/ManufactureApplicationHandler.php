@@ -42,7 +42,7 @@ final class ManufactureApplicationHandler extends AbstractHandler
     ): string|ManufactureApplication
     {
 
-//                dd($command->getPriority());
+        //                dd($command->getPriority());
 
         /** @var ManufactureApplicationEvent $event */
 
@@ -66,7 +66,7 @@ final class ManufactureApplicationHandler extends AbstractHandler
             ]
         );
 
-//        $event->setPriority(true);
+        //        $event->setPriority(true);
 
         /**
          * Добавляем к заявке продукт
