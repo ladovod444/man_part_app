@@ -34,7 +34,6 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
  */
 #[AutoconfigureTag('baks.manufacture_application.status')]
 #[AutoconfigureTag('baks.security.voter')]
-
 class ManufactureApplicationStatusCompleted implements ManufactureApplicationStatusInterface, VoterInterface
 {
 

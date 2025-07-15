@@ -21,13 +21,13 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Manufacture\Part\Application\Type\ManufactureApplicationStatus\Collection;
+namespace BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus\Collection;
 
-use BaksDev\Manufacture\Part\Application\Type\ManufactureApplicationStatus\ManufactureApplicationStatus;
+use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus;
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
-final  class ManufactureApplicationStatusCollection
+final class ManufactureApplicationStatusCollection
 {
     public function __construct(
         #[AutowireIterator('baks.manufacture_application.status', defaultPriorityMethod: 'sort')] private readonly iterable $status

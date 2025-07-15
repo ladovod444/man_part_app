@@ -83,40 +83,27 @@ class ManufactureApplicationEvent extends EntityEvent
     #[ORM\Column(type: 'boolean', nullable: true)]
     private bool $priority;
 
-    public function setPriority(bool $priority): self
-    {
-        $this->priority = $priority;
-        return $this;
-    }
-
-    public function isPriority(): bool
-    {
-        return $this->priority;
-    }
 
     /**
      * Коллекция продукции
      */
     #[Assert\Valid]
     #[ORM\OneToOne(targetEntity: ManufactureApplicationProduct::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
-    private Collection $product;
+    private Collection|ManufactureApplicationProduct $product;
 
     /** Статус заказа */
     #[Assert\NotBlank]
     #[ORM\Column(type: ManufactureApplicationStatus::TYPE)]
     private ManufactureApplicationStatus $status;
 
-    public function setProduct(Collection $product): self
-    {
-        $this->product = $product;
-        return $this;
-    }
-
-
     public function __construct() {
         $this->id = new ManufactureApplicationEventUid();
 
-        $this->status = new ManufactureApplicationStatus(new ManufactureApplicationStatusNew());
+//        dd(1);
+
+        $this->status = new ManufactureApplicationStatus(ManufactureApplicationStatusNew::class);
+
+//        dd($this->status);
     }
 
     public function __clone()
@@ -153,6 +140,29 @@ class ManufactureApplicationEvent extends EntityEvent
         return $this;
     }
 
+    public function setStatus(ManufactureApplicationStatus $status): self
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    public function setProduct(Collection $product): self
+    {
+        $this->product = $product;
+        return $this;
+    }
+
+
+    public function setPriority(bool $priority): self
+    {
+        $this->priority = $priority;
+        return $this;
+    }
+
+    public function isPriority(): bool
+    {
+        return $this->priority;
+    }
 
     /**
      * Product
@@ -170,6 +180,7 @@ class ManufactureApplicationEvent extends EntityEvent
     public function getStatus(): ManufactureApplicationStatus
     {
         return $this->status;
+//        return $this->status instanceof ManufactureApplicationStatus ? $this->status : new ManufactureApplicationStatus($this->status);
     }
 
     public function isStatusEquals(mixed $status): bool

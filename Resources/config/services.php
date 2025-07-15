@@ -24,6 +24,9 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use BaksDev\Manufacture\Part\Application\BaksDevManufacturePartApplicationBundle;
+use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus;
+use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus\ManufactureApplicationStatusCompleted;
+use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus\ManufactureApplicationStatusNew;
 
 return static function(ContainerConfigurator $configurator) {
 
@@ -45,9 +48,20 @@ return static function(ContainerConfigurator $configurator) {
             $PATH.'**'.DIRECTORY_SEPARATOR.'*Test.php',
         ]);
 
-    // TODO
+
+
+//    $services->alias(ManufactureApplicationStatus::class.' $manufactureApplicationStatusCompleted', ManufactureApplicationStatusCompleted::class);
+//    $services->alias(ManufactureApplicationStatus::class.' $manufactureApplicationStatusNew', ManufactureApplicationStatusNew::class);
+//
+//    $services->alias(ManufactureApplicationStatus::class, ManufactureApplicationStatusNew::class);
+
 //    $services->load(
 //        $NAMESPACE.'Type\Status\ManufacturePartStatus\\',
 //        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Status', 'ManufacturePartStatus'])
 //    );
+
+    $services->load(
+        $NAMESPACE.'Type\Status\ManufactureApplicationStatus\\',
+        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Status', 'ManufactureApplicationStatus'])
+    );
 };

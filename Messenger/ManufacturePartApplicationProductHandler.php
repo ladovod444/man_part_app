@@ -23,9 +23,15 @@
 
 namespace BaksDev\Manufacture\Part\Application\Messenger;
 
+use BaksDev\Manufacture\Part\Application\Entity\Event\ManufactureApplicationEvent;
+use BaksDev\Manufacture\Part\Application\Entity\Product\ManufactureApplicationProduct;
 use BaksDev\Manufacture\Part\Application\Repository\ManufactureApplicationProduct\ManufactureApplicationProductInterface;
 use BaksDev\Manufacture\Part\Application\Repository\UpdateManufactureApplicationTotal\UpdateManufactureApplicationTotalInterface;
+use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus;
+use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus\ManufactureApplicationStatusCompleted;
+use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus\ManufactureApplicationStatusNew;
 use BaksDev\Manufacture\Part\Messenger\ManufacturePartProduct\ManufacturePartProductMessage;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(priority: 10)]
@@ -34,10 +40,14 @@ class ManufacturePartApplicationProductHandler
     public function __construct(
         private readonly ManufactureApplicationProductInterface $manufactureApplicationProduct,
         private readonly UpdateManufactureApplicationTotalInterface $updateManufactureApplicationTotal,
+
+        private readonly EntityManagerInterface $entityManager,
     ) {}
 
     public function __invoke(ManufacturePartProductMessage $message): void
     {
+
+//        dd($message->getTotal());
 
         if($message->getTotal() !== false)
         {
@@ -50,6 +60,73 @@ class ManufacturePartApplicationProductHandler
                 $message->getModification(),
             );
 
+
+            dump(2);
+
+            dump($message->getEvent(),
+                $message->getOffer());
+
+//            die();
+
+            $ManufactureApplicationProduct = $this->entityManager->getRepository(ManufactureApplicationProduct::class)->findOneBy(
+                [
+//                    'product' => $message->getEvent(),
+                    'offer' => $message->getOffer(),
+                    'variation' => $message->getVariation(),
+                    'modification' => $message->getModification(),
+                ]
+            );
+
+//            dd($ManufactureApplicationProduct);
+
+            if ($ManufactureApplicationProduct instanceof ManufactureApplicationProduct) {
+
+                $manufacturePartTotal = $message->getTotal();
+                $manufactureApplicationProductTotal = $manufactureApplicationProduct['product_total'];
+
+                $updated_total = $manufactureApplicationProductTotal - $manufacturePartTotal;
+
+                if ($updated_total > 0)
+                {
+//                    dd($updated_total);
+
+                    $ManufactureApplicationProduct->setTotal($updated_total);
+                    $this->entityManager->flush();
+                }
+                else {
+                    $ManufactureApplicationProduct->setTotalCompleted($manufacturePartTotal);
+//                    $this->entityManager->flush();
+
+//                    dd($manufactureApplicationProduct['product_event']);
+
+                    // TODO Получить
+                    $ManufactureApplicationEvent = $this->entityManager->getRepository(ManufactureApplicationEvent::class)->findOneBy(
+                        [
+                           'id' => $manufactureApplicationProduct['product_event'],
+                        ]
+                    );
+
+                    $status = new ManufactureApplicationStatus(ManufactureApplicationStatusCompleted::class);
+                    $ManufactureApplicationEvent->setStatus($status);
+
+                    $this->entityManager->flush();
+
+//                    dd($ManufactureApplicationEvent);
+
+                    /** @var ManufactureApplicationEvent $Event $Event */
+//                    $Event = $ManufactureApplicationEvent->cloneEntity();
+//
+//                    /** v */
+//                    $Event->setStatus( new ManufactureApplicationStatus (ManufactureApplicationStatusCompleted::STATUS));
+//                    //ManufactureApplicationEvent
+//
+//                    $ManufactureApplicationProduct->setEvent($Event);
+//
+//                    $this->entityManager->flush();
+
+                }
+            } return;
+
             // Если такая заявка есть - то обновляем количество данной заявки - уменьшаем на кол-во
             // добавляемого в производственную партию товара
             if ($manufactureApplicationProduct)
@@ -60,7 +137,7 @@ class ManufacturePartApplicationProductHandler
 //                $updated_total = $manufactureApplicationProductTotal - $manufacturePartTotal;
 
 //                dd($manufactureApplicationProduct['product_event']);
-                
+
 //                $this->updateManufactureApplicationTotal->updateApplicationProductTotal($manufactureApplicationProduct['product_id'], $manufactureApplicationProductTotal, $manufacturePartTotal);
                 $this->updateManufactureApplicationTotal->updateApplicationProductTotal($manufactureApplicationProduct['product_event'], $manufactureApplicationProductTotal, $manufacturePartTotal);
             }

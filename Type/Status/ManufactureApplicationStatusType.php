@@ -36,6 +36,10 @@ class ManufactureApplicationStatusType extends Type
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ?ManufactureApplicationStatus
     {
+
+//        dump(new ManufactureApplicationStatus($value));
+//        dd($value);
+
         return !empty($value) ? new ManufactureApplicationStatus($value) : null;
     }
 
