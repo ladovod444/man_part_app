@@ -1,15 +1,34 @@
 <?php
+/*
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is furnished
+ *  to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 namespace BaksDev\Manufacture\Part\Application\Entity\Event;
 
 use BaksDev\Core\Entity\EntityEvent;
 use BaksDev\Manufacture\Part\Application\Entity\ManufactureApplication;
 use BaksDev\Manufacture\Part\Application\Entity\Product\ManufactureApplicationProduct;
-use BaksDev\Manufacture\Part\Application\Repository\ActionByMain\ActionByMainInterface;
 use BaksDev\Manufacture\Part\Application\Type\Event\ManufactureApplicationEventUid;
 use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
 
-use BaksDev\Manufacture\Part\Entity\Products\ManufacturePartProduct;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Users\UsersTable\Type\Actions\Event\UsersTableActionsEventUid;
 use Doctrine\ORM\Mapping as ORM;
@@ -52,24 +71,6 @@ class ManufactureApplicationEvent extends EntityEvent
     #[ORM\Column(type: UsersTableActionsEventUid::TYPE)]
     private UsersTableActionsEventUid $action;
 
-//    public function setAction(UsersTableActionsEventUid $action): self
-//    {
-//        $this->action = $action;
-//        return $this;
-//    }
-
-
-//    public function setAction(ActionByMainInterface $actionByMain): self
-//    {
-////        $this->action = $action;
-//
-//        $action_id = $actionByMain->findUsersTableActionByMain(new ManufactureApplicationUid(ManufactureApplicationUid::ACTION_ID));
-//        $this->action = new UsersTableActionsEventUid($action_id);
-//
-//        return $this;
-//    }
-
-
     #[Assert\NotBlank]
     #[Assert\Uuid]
     #[ORM\Column(type: UserProfileUid::TYPE,)]
@@ -106,11 +107,6 @@ class ManufactureApplicationEvent extends EntityEvent
 
     public function __construct() {
         $this->id = new ManufactureApplicationEventUid();
-
-//        $action_id = $actionByMain->findUsersTableActionByMain(new ManufactureApplicationUid(ManufactureApplicationUid::ACTION_ID));
-//        $this->action = new UsersTableActionsEventUid($action_id);
-//        $this->setAction(ActionByMainInterface $actionByMain);
-//        $this->action = new UsersTableActionsEventUid(ManufactureApplicationUid::ACTION_ID);
     }
 
     public function __clone()

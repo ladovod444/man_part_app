@@ -1,15 +1,31 @@
 <?php
+/*
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is furnished
+ *  to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 namespace BaksDev\Manufacture\Part\Application\Repository\ActionByMain;
 
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
-use BaksDev\Core\Doctrine\ORMQueryBuilder;
 use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
-use BaksDev\Products\Category\Type\Id\CategoryProductUid;
-use BaksDev\Users\Profile\UserProfile\Repository\UserProfileTokenStorage\UserProfileTokenStorageInterface;
 use BaksDev\Users\UsersTable\Entity\Actions\Event\UsersTableActionsEvent;
-use BaksDev\Users\UsersTable\Entity\Actions\Products\UsersTableActionsProduct;
-use BaksDev\Users\UsersTable\Entity\Actions\UsersTableActions;
 use BaksDev\Users\UsersTable\Type\Actions\Event\UsersTableActionsEventUid;
 
 final class ActionByMainRepository implements ActionByMainInterface
@@ -17,28 +33,19 @@ final class ActionByMainRepository implements ActionByMainInterface
 
     public function __construct(
         private readonly DBALQueryBuilder $DBALQueryBuilder,
-//        private readonly UserProfileTokenStorageInterface $UserProfileTokenStorage
-//        private readonly ORMQueryBuilder $ORMQueryBuilder
     ) {}
 
     public function findUsersTableActionByMain(ManufactureApplicationUid $main): UsersTableActionsEventUid|string
-//    public function findUsersTableActionByMain(ManufactureApplicationUid $main): array|null|object
     {
-//        $qb = $this->ORMQueryBuilder->createQueryBuilder(self::class);
-//        $qb = $this->dbal->createQueryBuilder(self::class);
 
         $dbal = $this->DBALQueryBuilder
             ->createQueryBuilder(self::class)
             ->bindLocal();
 
-//        $select = sprintf('new %s(action.event)', UsersTableActionsEventUid::class);
-
-//        $qb->select($select);
         $dbal->select('event.id');
 
         $dbal
             ->from(UsersTableActionsEvent::class, 'event')
-//            ->addSelect()
             ->where('event.main = :main')
             ->setParameter(
                 key: 'main',
@@ -46,11 +53,7 @@ final class ActionByMainRepository implements ActionByMainInterface
                 type: ManufactureApplicationUid::TYPE
             );
 
-//        dd($dbal->fetchAssociative());
-
         $result = $dbal->fetchAssociative();
-
-//        $dbal->update(UsersTableActionsEvent::class);
 
         return new UsersTableActionsEventUid($result['id']);
     }

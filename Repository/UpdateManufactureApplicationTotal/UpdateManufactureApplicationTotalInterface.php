@@ -21,13 +21,11 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Manufacture\Part\Application\Repository\ActionByMain;
+namespace BaksDev\Manufacture\Part\Application\Repository\UpdateManufactureApplicationTotal;
 
 use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
-use BaksDev\Products\Category\Type\Id\CategoryProductUid;
-use BaksDev\Users\UsersTable\Type\Actions\Event\UsersTableActionsEventUid;
 
-interface ActionByMainInterface
+interface UpdateManufactureApplicationTotalInterface
 {
-    public function findUsersTableActionByMain(ManufactureApplicationUid $main): UsersTableActionsEventUid|string;
+    public function updateApplicationProductTotal(string|ManufactureApplicationUid $id, int $updated_total): int|string;
 }

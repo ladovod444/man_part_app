@@ -28,8 +28,6 @@ use Generator;
 
 interface AllManufacturePartApplicationInterface
 {
-    /** @return Generator|false Найти все результаты */
-//    public function findAll(): false|Generator;
     public function search(SearchDTO $search): self;
     public function findPaginator(): PaginatorInterface;
 }

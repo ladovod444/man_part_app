@@ -53,16 +53,9 @@ class ManufactureApplicationProduct extends EntityEvent
 
     /** Связь на событие */
     #[Assert\NotBlank]
-//    #[ORM\ManyToOne(targetEntity: ManufactureApplicationEvent::class, inversedBy: "product")]
-//    #[ORM\OneToOne(targetEntity: ManufactureApplicationEvent::class, inversedBy: "product", cascade: ['persist'] )]
     #[ORM\OneToOne(targetEntity: ManufactureApplicationEvent::class, inversedBy: "product", cascade: ['all'] )]
     #[ORM\JoinColumn(name: 'event', referencedColumnName: "id")]
     private ManufactureApplicationEvent $event;
-
-//    public function getEvent(): ManufactureApplicationEvent
-//    {
-//        return $this->event;
-//    }
 
     /**
      * Идентификатор События!!! продукта

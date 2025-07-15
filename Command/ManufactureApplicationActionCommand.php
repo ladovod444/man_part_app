@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace BaksDev\Manufacture\Part\Application\Command;
 
-
 use BaksDev\Core\Type\Locale\Locale;
 use BaksDev\Core\Type\Locale\Locales\Ru;
 use BaksDev\Manufacture\Part\Application\Repository\ExistManufactureApplicationAction\ExistManufactureApplicationActionInterface;
