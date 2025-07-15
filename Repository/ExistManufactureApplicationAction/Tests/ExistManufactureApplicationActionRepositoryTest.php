@@ -21,28 +21,26 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Manufacture\Part\Application\Repository\ActionByMain\Tests;
+namespace BaksDev\Manufacture\Part\Application\Repository\ExistManufactureApplicationAction\Tests;
 
-use BaksDev\Manufacture\Part\Application\Repository\ActionByMain\ActionByMainInterface;
+use BaksDev\Manufacture\Part\Application\Repository\ExistManufactureApplicationAction\ExistManufactureApplicationActionInterface;
+use BaksDev\Manufacture\Part\Application\Repository\ExistManufactureApplicationAction\ExistManufactureApplicationActionRepository;
 use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
 /**
- * @group manufacture-application-part-main
+ * @group manufacture-application-part
  */
 #[When(env: 'test')]
-class ActionByMainRepositoryTest extends KernelTestCase
+class ExistManufactureApplicationActionRepositoryTest extends KernelTestCase
 {
-    public function testActionByMain ()
-    {
-        /** @var ActionByMainInterface $repository */
-        $repository = self::getContainer()->get(ActionByMainInterface::class);
+    public function testIsExistManufactureApplicationAction() {
+        /** @var ExistManufactureApplicationActionInterface $repository */
+        $repository = self::getContainer()->get(ExistManufactureApplicationActionInterface::class);
 
-        $result = $repository->findUsersTableActionByMain( new ManufactureApplicationUid(ManufactureApplicationUid::ACTION_ID));
+        $result = $repository->isExistManufactureApplicationAction(ManufactureApplicationUid::ACTION_ID);
 
-//        dd($result);
-
-        self::assertTrue(true);
+        self::assertTrue($result);
     }
 }

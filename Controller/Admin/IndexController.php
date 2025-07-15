@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace BaksDev\Manufacture\Part\Application\Controller\Admin;
 
-
 use BaksDev\Centrifugo\Services\Token\TokenUserGenerator;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Form\Search\SearchForm;

@@ -37,7 +37,8 @@ class AllManufacturePartApplicationRepositoryTest extends KernelTestCase
         /** @var AllManufacturePartApplicationInterface $repository */
         $repository = self::getContainer()->get(AllManufacturePartApplicationInterface::class);
 
-        $result = $repository->findAll();
+//        $result = $repository->findAll();
+        $result = $repository->findPaginator();
 
 //        dd(iterator_to_array($result));
 
