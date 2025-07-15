@@ -30,6 +30,7 @@ use BaksDev\Manufacture\Part\Application\Entity\Product\ManufactureApplicationPr
 use BaksDev\Products\Product\Type\Event\ProductEventUid;
 use BaksDev\Products\Product\Type\Offers\Id\ProductOfferUid;
 use BaksDev\Products\Product\Type\Offers\Variation\Id\ProductVariationUid;
+use BaksDev\Products\Product\Type\Offers\Variation\Modification\Id\ProductModificationUid;
 
 class ManufactureApplicationProductRepository implements ManufactureApplicationProductInterface
 {
@@ -39,7 +40,8 @@ class ManufactureApplicationProductRepository implements ManufactureApplicationP
     public function findApplicationProduct(
         string|ProductEventUid $product,
         string|ProductOfferUid $offer,
-        string|ProductVariationUid $variation
+        string|ProductVariationUid $variation,
+        string|ProductModificationUid|false $modification,
     ): array|false
     {
         $dbal = $this->DBALQueryBuilder
@@ -62,6 +64,7 @@ class ManufactureApplicationProductRepository implements ManufactureApplicationP
 
         $dbal
             ->addSelect('manufacture_application_product.id as product_id')
+            ->addSelect('manufacture_application_product.event as product_event')
             ->addSelect('manufacture_application_product.product as product_uid')
             ->addSelect('manufacture_application_product.offer as product_offer_uid')
             ->addSelect('manufacture_application_product.total as product_total')
@@ -83,6 +86,13 @@ class ManufactureApplicationProductRepository implements ManufactureApplicationP
         $dbal
             ->andWhere('manufacture_application_product.variation = :variation')
             ->setParameter('variation', $variation, ProductVariationUid::TYPE);
+
+        if ($modification !== false)
+        {
+            $dbal
+                ->andWhere('manufacture_application_product.modification = :modification')
+                ->setParameter('modification', $modification, ProductModificationUid::TYPE);
+        }
 
 
 //        dump($dbal->getSQL());   +

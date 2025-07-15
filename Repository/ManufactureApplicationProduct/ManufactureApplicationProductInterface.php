@@ -28,6 +28,7 @@ use BaksDev\Manufacture\Part\Entity\Products\ManufacturePartProduct;
 use BaksDev\Products\Product\Type\Event\ProductEventUid;
 use BaksDev\Products\Product\Type\Offers\Id\ProductOfferUid;
 use BaksDev\Products\Product\Type\Offers\Variation\Id\ProductVariationUid;
+use BaksDev\Products\Product\Type\Offers\Variation\Modification\Id\ProductModificationUid;
 
 interface ManufactureApplicationProductInterface
 {
@@ -35,5 +36,7 @@ interface ManufactureApplicationProductInterface
     public function findApplicationProduct(
         string|ProductEventUid $product,
         string|ProductOfferUid $offer,
-        string|ProductVariationUid $variation): array|false;
+        string|ProductVariationUid $variation,
+        string|ProductModificationUid|false $modification,
+    ): array|false;
 }

@@ -24,8 +24,12 @@
 namespace BaksDev\Manufacture\Part\Application\Repository\UpdateManufactureApplicationTotal;
 
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
+use BaksDev\Manufacture\Part\Application\Entity\Event\ManufactureApplicationEvent;
 use BaksDev\Manufacture\Part\Application\Entity\Product\ManufactureApplicationProduct;
+use BaksDev\Manufacture\Part\Application\Type\Event\ManufactureApplicationEventUid;
 use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
+use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus\ManufactureApplicationStatusCompleted;
+use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus\ManufactureApplicationStatusNew;
 use Doctrine\DBAL\ParameterType;
 
 class UpdateManufactureApplicationTotalRepository implements UpdateManufactureApplicationTotalInterface
@@ -35,30 +39,56 @@ class UpdateManufactureApplicationTotalRepository implements UpdateManufactureAp
     /**
      * Обновляем кол-во товара в производственной заявке
      */
-    public function updateApplicationProductTotal(string|ManufactureApplicationUid $id, int $updated_total): int|string
+//    public function updateApplicationProductTotal(string|ManufactureApplicationUid $id, int $manufactureApplicationProductTotal, $manufacturePartTotal): int|string
+    public function updateApplicationProductTotal(string|ManufactureApplicationEventUid $eventUid, int $manufactureApplicationProductTotal, $manufacturePartTotal): int|string
     {
 
         $dbal = $this->DBALQueryBuilder
             ->createQueryBuilder(self::class)
             ->bindLocal();
 
+        $updated_total = $manufactureApplicationProductTotal - $manufacturePartTotal;
 
-        // TODO soft delete ??
         // удалить заявку если кол-во <= 0
         if($updated_total <= 0)
         {
-            $dbal->delete(ManufactureApplicationProduct::class);
+//            $dbal->delete(ManufactureApplicationProduct::class);
+            $dbal->update(ManufactureApplicationProduct::class);
 
-//            // TODO delete event, appl.
-//
-//            status - new и complete
-//            tags
 
            // если заявка < то задать КОЛ-во заявке
 
             $dbal
-                ->where('id = :id')
-                ->setParameter('id', $id, ManufactureApplicationUid::TYPE);
+                ->set('total_completed', ':total_completed')
+                ->setParameter('total_completed', $manufacturePartTotal, ParameterType::INTEGER);
+
+            $dbal
+                ->where('event = :event')
+                ->setParameter('event', $eventUid, ManufactureApplicationUid::TYPE);
+
+//            dd($manufacturePartTotal);
+            // TODO Обновить статус ManufactureApplicationEvent
+            $dbal->executeStatement();
+
+
+
+            // Обновить статус
+            $dbal = $this->DBALQueryBuilder
+                ->createQueryBuilder(self::class)
+                ->bindLocal();
+
+            $dbal->update(ManufactureApplicationEvent::class);
+
+            $dbal
+                ->set('status', ':status')
+                ->setParameter('status', ManufactureApplicationStatusCompleted::STATUS);
+
+            $dbal
+                ->where('id = :event')
+                ->setParameter('event', $eventUid, ManufactureApplicationUid::TYPE);
+
+            $dbal->executeStatement();
+
         }
 
         else
@@ -70,10 +100,15 @@ class UpdateManufactureApplicationTotalRepository implements UpdateManufactureAp
                 ->setParameter('total', $updated_total, ParameterType::INTEGER);
 
 
-            $id = $id instanceof ManufactureApplicationUid ? $id : new ManufactureApplicationUid($id);
+            $event = $eventUid instanceof ManufactureApplicationEventUid ? $eventUid : new ManufactureApplicationEventUid($eventUid);
+//            $dbal
+//                ->where('id = :id')
+////                ->setParameter('id', $id, ManufactureApplicationUid::TYPE);
+//                ->setParameter('id', $id, ManufactureApplicationEventUid::TYPE);
+
             $dbal
-                ->where('id = :id')
-                ->setParameter('id', $id, ManufactureApplicationUid::TYPE);
+                ->where('event = :event')
+                ->setParameter('event', $event, ManufactureApplicationEventUid::TYPE);
         }
 
         return $dbal->executeStatement();

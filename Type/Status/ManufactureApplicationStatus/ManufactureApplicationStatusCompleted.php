@@ -21,7 +21,7 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Manufacture\Part\Application\Type\ManufactureApplicationStatus\ManufactureApplicationStatus;
+namespace BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus;
 
 use BaksDev\Manufacture\Part\Application\Security\RoleManufactureApplicationStatus;
 use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus\Collection\ManufactureApplicationStatusInterface;

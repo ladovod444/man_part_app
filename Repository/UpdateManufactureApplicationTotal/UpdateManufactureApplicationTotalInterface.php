@@ -23,9 +23,11 @@
 
 namespace BaksDev\Manufacture\Part\Application\Repository\UpdateManufactureApplicationTotal;
 
+use BaksDev\Manufacture\Part\Application\Type\Event\ManufactureApplicationEventUid;
 use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
 
 interface UpdateManufactureApplicationTotalInterface
 {
-    public function updateApplicationProductTotal(string|ManufactureApplicationUid $id, int $updated_total): int|string;
+//    public function updateApplicationProductTotal(string|ManufactureApplicationUid $id, int $manufactureApplicationProductTotal, int $manufacturePartTotal): int|string;
+    public function updateApplicationProductTotal(string|ManufactureApplicationEventUid $eventUid, int $manufactureApplicationProductTotal, int $manufacturePartTotal): int|string;
 }

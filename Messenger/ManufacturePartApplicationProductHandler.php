@@ -43,7 +43,12 @@ class ManufacturePartApplicationProductHandler
         {
 
             // Получаем данные по заявке - manufactureApplicationProduct
-            $manufactureApplicationProduct = $this->manufactureApplicationProduct->findApplicationProduct($message->getEvent(), $message->getOffer(), $message->getVariation());
+            $manufactureApplicationProduct = $this->manufactureApplicationProduct->findApplicationProduct(
+                $message->getEvent(),
+                $message->getOffer(),
+                $message->getVariation(),
+                $message->getModification(),
+            );
 
             // Если такая заявка есть - то обновляем количество данной заявки - уменьшаем на кол-во
             // добавляемого в производственную партию товара
@@ -52,10 +57,12 @@ class ManufacturePartApplicationProductHandler
                 $manufacturePartTotal = $message->getTotal();
                 $manufactureApplicationProductTotal = $manufactureApplicationProduct['product_total']; // product_total
 
-                $updated_total = $manufactureApplicationProductTotal - $manufacturePartTotal;
+//                $updated_total = $manufactureApplicationProductTotal - $manufacturePartTotal;
 
-//                dump($updated_total);
-                $this->updateManufactureApplicationTotal->updateApplicationProductTotal($manufactureApplicationProduct['product_id'], $updated_total);
+//                dd($manufactureApplicationProduct['product_event']);
+                
+//                $this->updateManufactureApplicationTotal->updateApplicationProductTotal($manufactureApplicationProduct['product_id'], $manufactureApplicationProductTotal, $manufacturePartTotal);
+                $this->updateManufactureApplicationTotal->updateApplicationProductTotal($manufactureApplicationProduct['product_event'], $manufactureApplicationProductTotal, $manufacturePartTotal);
             }
 
         }
