@@ -28,15 +28,9 @@ namespace BaksDev\Manufacture\Part\Application\Controller\Admin;
 use BaksDev\Centrifugo\Services\Token\TokenUserGenerator;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Form\Search\SearchForm;
-use BaksDev\Manufacture\Part\Application\Repository\ActionByMain\ActionByMainInterface;
 use BaksDev\Manufacture\Part\Application\Repository\AllManufacturePartApplication\AllManufacturePartApplicationInterface;
-use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
-use BaksDev\Manufacture\Part\Repository\AllProducts\AllManufactureProductsInterface;
-use BaksDev\Manufacture\Part\Repository\ManufacturePartChoice\ManufacturePartChoiceInterface;
 use BaksDev\Manufacture\Part\Repository\OpenManufacturePart\OpenManufacturePartInterface;
 use BaksDev\Manufacture\Part\UseCase\Admin\AddProduct\ManufactureSelectionPartProductsForm;
-use BaksDev\Products\Product\Forms\ProductFilter\Admin\ProductFilterDTO;
-use BaksDev\Products\Product\Forms\ProductFilter\Admin\ProductFilterForm;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use BaksDev\Core\Controller\AbstractController;
@@ -57,6 +51,7 @@ final class IndexController extends AbstractController
         int $page = 0,
     ): Response
     {
+
 
         // Поиск
         $search = new SearchDTO();
