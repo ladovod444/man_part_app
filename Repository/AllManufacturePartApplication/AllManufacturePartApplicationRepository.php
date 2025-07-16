@@ -78,6 +78,7 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
 
         $dbal
             ->addSelect('manufacture_application_event.priority')
+            ->addSelect('manufacture_application_event.status')
             ->leftJoin(
                 'manufacture_application',
                 ManufactureApplicationEvent::class,
@@ -88,6 +89,7 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
         $dbal
             ->addSelect('manufacture_application_product.product as product_uid')
             ->addSelect('manufacture_application_product.total as product_total')
+            ->addSelect('manufacture_application_product.total_completed as product_total_completed')
             ->leftJoin(
                 'manufacture_application_event',
                 ManufactureApplicationProduct::class,
@@ -105,7 +107,7 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
             );
 
         $dbal
-            ->addSelect('product_info.article')
+            ->addSelect('product_info.article as product_article')
             ->join(
                 'manufacture_application_product',
                 ProductInfo::class,
@@ -370,7 +372,9 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
 
         $dbal->allGroupByExclude();
 
-        return $this->paginator->fetchAllAssociative($dbal);
+       return $this->paginator->fetchAllHydrate($dbal,AllManufacturePartApplicationResult::class);
+
+//        return $this->paginator->fetchAllAssociative($dbal);
 
     }
 

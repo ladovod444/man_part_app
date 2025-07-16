@@ -13,8 +13,18 @@
             {% endif %}
 
 
-            <div class="card-body small p-2">
+            <div class="card-body p-2">
                 <div class="d-flex align-items-center small">
+
+                    {% set output_status =  item.status == 'new' ? 'открыта' : 'завершена' %}
+
+
+                    <div class="fw-bolder mb-1 ">
+                       <span>{{ output_status }}</span>&nbsp;
+
+                        <span>{{ item.productTotalCompleted ? '(' ~ item.productTotalCompleted ~ ')' : '' }}</span>
+                    </div>
+
                     {#                    <div class="w-100 d-flex gap-3 align-items-center"> #}
                     {#                        <div class="h5"> #}
                     {#                            <input id="check-01978bde-7cd3-7c80-977c-18afa854da6d" type="checkbox" #}
@@ -45,45 +55,45 @@
 
                 {#                {{ item.id }} #}
 
-                <span class="fw-bolder mb-1 text-dark text-decoration-none product-name">{{ item.product_name }}</span>
+                <span class="fw-bolder mb-1 text-dark text-decoration-none product-name">{{ item.productName }}</span>
 
 
                 <div class="text-muted fw-bolder">
                     {# Значение множественного варианта ТП #}
-                    {{ item.product_variation_value|call_twig_func(item.product_variation_reference~'_render') ~
-                    item.product_modification_value|call_twig_func(item.product_modification_reference~'_render') }}
+                    {{ item.productVariationValue|call_twig_func(item.productVariationReference~'_render') ~
+                    item.productModificationValue|call_twig_func(item.productModificationReference~'_render') }}
 
                     {# Значение торгового предложения #}
-                    {{ item.product_offer_value|call_twig_func(item.product_offer_reference~'_render') }}
+                    {{ item.productOfferValue|call_twig_func(item.productOfferReference~'_render') }}
 
                     {# Постфикс торгового предложения #}
-                    {{ item.product_offer_postfix }}
+                    {{ item.productOfferPostfix }}
                     {# Постфикс множественного варианта #}
-                    {{ item.product_variation_postfix }}
+                    {{ item.productVariationPostfix }}
                     {# Постфикс модификации #}
-                    {{ item.product_modification_postfix }}
+                    {{ item.productModificationPostfix }}
 
                 </div>
 
 
                 <div class="mb-1 mt-2">
                     <span class="opacity-50 fw-normal">Производство:</span> &nbsp;
-                    <strong>{{ item.action_name }}</strong>
+                    <strong>{{ item.actionName }}</strong>
                 </div>
                 <div class="mb-1">
                     <span class="opacity-50 fw-normal">Ответственный:</span> &nbsp;
-                    <strong> {{ item.users_profile_username }}</strong>
+                    <strong> {{ item.usersProfileUsername }}</strong>
                 </div>
 
                 <div class="mb-1">
                     <span class="opacity-50 fw-normal">Количество:</span> &nbsp;
-                    <strong> {{ item.product_total }}</strong>
+                    <strong> {{ item.productTotal }}</strong>
                 </div>
 
 
                 <div class="d-flex justify-content-between align-items-center small">
 
-                    <div class="mb-1">{{ item.product_article }}</div>
+                    <div class="mb-1">{{ item.productArticle }}</div>
 
 
                     {% if is_granted('ROLE_MANUFACTURE_PART_ADD') or  is_granted('ROLE_ADMIN') %}
@@ -111,10 +121,10 @@
 
                            data-method="post"
                            data-formname="{{ add_selected_product_form_name }}"
-                           data-product="{{ item.product_uid }}"
-                           data-offer="{{ item.product_offer_uid }}"
-                           data-variation="{{ item.product_variation_uid }}"
-                           data-modification="{{ item.product_modification_uid }}"
+                           data-product="{{ item.productId }}"
+                           data-offer="{{ item.productOfferId }}"
+                           data-variation="{{ item.productVariationId }}"
+                           data-modification="{{ item.productModificationId }}"
                            data-collection-form="product_form_data"
                            data-total="100"
 

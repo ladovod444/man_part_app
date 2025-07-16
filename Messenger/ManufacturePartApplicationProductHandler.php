@@ -24,6 +24,7 @@
 namespace BaksDev\Manufacture\Part\Application\Messenger;
 
 use BaksDev\Manufacture\Part\Application\Entity\Event\ManufactureApplicationEvent;
+use BaksDev\Manufacture\Part\Application\Entity\ManufactureApplication;
 use BaksDev\Manufacture\Part\Application\Entity\Product\ManufactureApplicationProduct;
 use BaksDev\Manufacture\Part\Application\Repository\ManufactureApplicationProduct\ManufactureApplicationProductInterface;
 use BaksDev\Manufacture\Part\Application\Repository\UpdateManufactureApplicationTotal\UpdateManufactureApplicationTotalInterface;
@@ -86,6 +87,7 @@ class ManufacturePartApplicationProductHandler
 
                 $updated_total = $manufactureApplicationProductTotal - $manufacturePartTotal;
 
+                // Обновляем только total
                 if ($updated_total > 0)
                 {
 //                    dd($updated_total);
@@ -93,7 +95,9 @@ class ManufacturePartApplicationProductHandler
                     $ManufactureApplicationProduct->setTotal($updated_total);
                     $this->entityManager->flush();
                 }
-                else {
+                else { // Задать total_completed
+                       // и Задать статус completed ManufactureApplicationEvent
+
                     $ManufactureApplicationProduct->setTotalCompleted($manufacturePartTotal);
 //                    $this->entityManager->flush();
 
@@ -113,34 +117,46 @@ class ManufacturePartApplicationProductHandler
 
 //                    dd($ManufactureApplicationEvent);
 
-                    /** @var ManufactureApplicationEvent $Event $Event */
+
+
+
+
+
+//                    $ManufactureApplication = $this->entityManager->getRepository(ManufactureApplication::class)->findOneBy(
+//                        [
+//                            'event' => $ManufactureApplicationEvent->getId(),
+//                        ]
+//                    );
+//                    /** @var ManufactureApplicationEvent $Event $Event */
 //                    $Event = $ManufactureApplicationEvent->cloneEntity();
 //
-//                    /** v */
-//                    $Event->setStatus( new ManufactureApplicationStatus (ManufactureApplicationStatusCompleted::STATUS));
+////                    $Event->setStatus( new ManufactureApplicationStatus (ManufactureApplicationStatusCompleted::STATUS));
 //                    //ManufactureApplicationEvent
 //
-//                    $ManufactureApplicationProduct->setEvent($Event);
+//                    dd($Event);
+//
+//                    $ManufactureApplication->setEvent($Event);
 //
 //                    $this->entityManager->flush();
+//
+//                    dd(1);
+
+
 
                 }
-            } return;
-
-            // Если такая заявка есть - то обновляем количество данной заявки - уменьшаем на кол-во
-            // добавляемого в производственную партию товара
-            if ($manufactureApplicationProduct)
-            {
-                $manufacturePartTotal = $message->getTotal();
-                $manufactureApplicationProductTotal = $manufactureApplicationProduct['product_total']; // product_total
-
-//                $updated_total = $manufactureApplicationProductTotal - $manufacturePartTotal;
-
-//                dd($manufactureApplicationProduct['product_event']);
-
-//                $this->updateManufactureApplicationTotal->updateApplicationProductTotal($manufactureApplicationProduct['product_id'], $manufactureApplicationProductTotal, $manufacturePartTotal);
-                $this->updateManufactureApplicationTotal->updateApplicationProductTotal($manufactureApplicationProduct['product_event'], $manufactureApplicationProductTotal, $manufacturePartTotal);
             }
+
+//            // Если такая заявка есть - то обновляем количество данной заявки - уменьшаем на кол-во
+//            // добавляемого в производственную партию товара
+//            if ($manufactureApplicationProduct)
+//            {
+//                $manufacturePartTotal = $message->getTotal();
+//                $manufactureApplicationProductTotal = $manufactureApplicationProduct['product_total']; // product_total
+//
+//
+////                $this->updateManufactureApplicationTotal->updateApplicationProductTotal($manufactureApplicationProduct['product_id'], $manufactureApplicationProductTotal, $manufacturePartTotal);
+//                $this->updateManufactureApplicationTotal->updateApplicationProductTotal($manufactureApplicationProduct['product_event'], $manufactureApplicationProductTotal, $manufacturePartTotal);
+//            }
 
         }
     }

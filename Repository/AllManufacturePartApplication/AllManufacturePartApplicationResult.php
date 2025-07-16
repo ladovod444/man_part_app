@@ -78,7 +78,20 @@ class AllManufacturePartApplicationResult
         private bool|null $priority,
 
         private int|null $product_total,
+        private int|null $product_total_completed,
+
+        private string|null $status,
     ) {}
+
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
 
     public function getProductArticle(): ?string
     {
@@ -123,7 +136,7 @@ class AllManufacturePartApplicationResult
         return new ProductEventUid($this->product_uid);
     }
 
-    public function getProductOfferUid(): ProductOfferUid
+    public function getProductOfferId(): ProductOfferUid
     {
 //        if(is_null($this->product_offer_uid))
 //        {
@@ -252,6 +265,10 @@ class AllManufacturePartApplicationResult
 
     public function getProductTotal(): ?int {
         return $this->product_total;
+    }
+
+    public function getProductTotalCompleted(): ?int {
+        return $this->product_total_completed;
     }
 
 }
