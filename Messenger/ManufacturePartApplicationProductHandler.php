@@ -77,8 +77,13 @@ class ManufacturePartApplicationProductHandler
                     'offer' => $message->getOffer(),
                     'variation' => $message->getVariation(),
                     'modification' => $message->getModification(),
+                    'event' => $message->getManufactureApplicationProductEvent()
+
+//                    'event' => $message->getProductEvent(),
                 ]
             );
+
+            dump($message->getManufactureApplicationProductEvent());
 
 //            dd($ManufactureApplicationProduct);
 
@@ -94,6 +99,8 @@ class ManufacturePartApplicationProductHandler
                 $updated_total = $manufactureApplicationProductTotal - $manufacturePartTotal;
 
                 // Обновляем только total
+
+                /*
                 if ($updated_total > 0)
                 {
 //                    dd($updated_total);
@@ -103,13 +110,14 @@ class ManufacturePartApplicationProductHandler
 
                     return;
                 }
+                */
 
 //                else
 //                {
                     // Задать total_completed
-                       // и Задать статус completed ManufactureApplicationEvent
+                    // и Задать статус completed ManufactureApplicationEvent
 
-                    $ManufactureApplicationProduct->setTotalCompleted($manufacturePartTotal);
+//                    $ManufactureApplicationProduct->setTotalCompleted($manufacturePartTotal);
 //                    $this->entityManager->flush();
 
 //                    dd($manufactureApplicationProduct['product_event']);
@@ -122,12 +130,11 @@ class ManufacturePartApplicationProductHandler
                         ]
                     );
 
-                    $status = new ManufactureApplicationStatus(ManufactureApplicationStatusCompleted::class);
-                    $ManufactureApplicationEvent->setStatus($status);
 
-                    $this->entityManager->flush();
+//                    $ManufactureApplicationEvent->setStatus($status);
+//                    $this->entityManager->flush();
 
-//                    dd($ManufactureApplicationEvent);
+
 
 
 
@@ -146,16 +153,14 @@ class ManufacturePartApplicationProductHandler
                     $Event = $ManufactureApplicationEvent->cloneEntity();
 
 
-                $ManufactureApplication = $this->entityManager->getRepository(ManufactureApplication::class)->findOneBy(
-                    [
-                        'id' => $ManufactureApplicationEvent->getMain(),
-                    ]
-                );
+
+                    $ManufactureApplication = $this->entityManager->getRepository(ManufactureApplication::class)->findOneBy(
+                        [
+                            'id' => $ManufactureApplicationEvent->getMain(),
+                        ]
+                    );
 
 //                    dd($ManufactureApplication);
-
-//                    dd($Event);
-
 
 //
 ////                    $Event->setStatus( new ManufactureApplicationStatus (ManufactureApplicationStatusCompleted::STATUS));
@@ -165,15 +170,32 @@ class ManufacturePartApplicationProductHandler
 //
                     $ManufactureApplication->setEvent($Event);
 
-                    $ManufactureApplicationProduct->setEvent($Event);
+                    $Product = $ManufactureApplicationProduct->cloneEntity();
+
+                    if ($updated_total <= 0)
+                    {
+                        $Product->setTotalCompleted($manufacturePartTotal);
+
+                        $status = new ManufactureApplicationStatus(ManufactureApplicationStatusCompleted::class);
+                        $Event->setStatus($status);
+                    }
+
+                    if ($updated_total > 0)
+                    {
+                        //                    dd($updated_total);
+
+                        $Product->setTotal($updated_total);
+                        $this->entityManager->flush();
+
+//                        return;
+                    }
+
+                    $Product->setEvent($Event);
 
                     $this->entityManager->persist($Event);
-
+                    $this->entityManager->persist($Product);
                     $this->entityManager->flush();
 //
-//                    dd(1);
-
-
 
 //                }
             }
