@@ -57,6 +57,12 @@ class ManufactureApplicationProduct extends EntityEvent
     #[ORM\JoinColumn(name: 'event', referencedColumnName: "id")]
     private ManufactureApplicationEvent $event;
 
+    public function setEvent(ManufactureApplicationEvent $event): self
+    {
+        $this->event = $event;
+        return $this;
+    }
+
 
     /**
      * Идентификатор События!!! продукта

@@ -41,8 +41,6 @@ class ExistManufactureApplicationActionRepositoryTest extends KernelTestCase
 
         $result = $repository->isExistManufactureApplicationAction(ManufactureApplicationUid::ACTION_ID);
 
-        dd(get_declared_classes());
-
         self::assertTrue($result);
     }
 }
