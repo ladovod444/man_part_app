@@ -33,8 +33,8 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
  * Статус New «Новый»
  */
 #[AutoconfigureTag('baks.manufacture_application.status')]
-#[AutoconfigureTag('baks.security.voter')]
-class ManufactureApplicationStatusCompleted implements ManufactureApplicationStatusInterface, VoterInterface
+//#[AutoconfigureTag('baks.security.voter')]
+class ManufactureApplicationStatusCompleted implements ManufactureApplicationStatusInterface /*, VoterInterface*/
 {
 
     public const string STATUS = 'completed';

@@ -57,6 +57,7 @@ class ManufactureApplicationProduct extends EntityEvent
     #[ORM\JoinColumn(name: 'event', referencedColumnName: "id")]
     private ManufactureApplicationEvent $event;
 
+
     /**
      * Идентификатор События!!! продукта
      */
@@ -123,6 +124,11 @@ class ManufactureApplicationProduct extends EntityEvent
         return (string) $this->id;
     }
 
+    public function getTotal(): int
+    {
+        return $this->total;
+    }
+
     public function setTotal(int $total): self
     {
         $this->total = $total;
@@ -138,6 +144,11 @@ class ManufactureApplicationProduct extends EntityEvent
     {
         $this->total_completed = $total_completed;
         return $this;
+    }
+
+    public function getEvent(): ManufactureApplicationEvent
+    {
+        return $this->event;
     }
 
 

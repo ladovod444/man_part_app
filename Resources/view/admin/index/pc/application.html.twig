@@ -14,12 +14,14 @@
 
 
             <div class="card-body p-2">
-                <div class="d-flex align-items-center small">
+                <div class="d-flex align-items-center small" style="justify-content: end;">
 
                     {% set output_status =  item.status == 'new' ? 'открыта' : 'завершена' %}
+                    {% set output_bg =  item.status == 'new' ? 'bg-primary' : 'bg-secondary' %}
 
+                    <div></div>
 
-                    <div class="fw-bolder mb-1 ">
+                    <div class="fw-bolder m-1 {{ output_bg }} px-1 rounded-1" style="color: #fff;">
                        <span>{{ output_status }}</span>&nbsp;
 
                         <span>{{ item.productTotalCompleted ? '(' ~ item.productTotalCompleted ~ ')' : '' }}</span>

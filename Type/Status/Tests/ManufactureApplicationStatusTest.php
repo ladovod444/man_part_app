@@ -23,12 +23,12 @@ class ManufactureApplicationStatusTest
     {
         /** @var ManufactureApplicationStatusCollection $ManufactureApplicationStatusCollection */
         $ManufactureApplicationStatusCollection = self::getContainer()->get(ManufactureApplicationStatusCollection::class);
-
+        
         foreach($ManufactureApplicationStatusCollection->cases() as $case)
         {
             $ManufactureApplicationStatus = new ManufactureApplicationStatus($case->getValue());
 
-            dump($case->getValue());
+//            dump($case->getValue());
 
             self::assertTrue($ManufactureApplicationStatus->equals($case::class)); // немспейс интерфейса
             self::assertTrue($ManufactureApplicationStatus->equals($case)); // объект интерфейса

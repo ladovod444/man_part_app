@@ -21,7 +21,6 @@
  *  THE SOFTWARE.
  */
 
-
 namespace BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus\Collection;
 
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
