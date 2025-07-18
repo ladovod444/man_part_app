@@ -42,8 +42,6 @@ final class ManufactureApplicationHandler extends AbstractHandler
     ): string|ManufactureApplication
     {
 
-        //                dd($command->getPriority());
-
         /** @var ManufactureApplicationEvent $event */
 
         $this
@@ -65,8 +63,6 @@ final class ManufactureApplicationHandler extends AbstractHandler
                 'id' => $this->main->getEvent(),
             ]
         );
-
-        //        $event->setPriority(true);
 
         /**
          * Добавляем к заявке продукт
@@ -91,7 +87,6 @@ final class ManufactureApplicationHandler extends AbstractHandler
 
 
         /* Отправляем сообщение в шину */
-
 
         $this->messageDispatch
             //            ->addClearCacheOther('wildberries-manufacture')
