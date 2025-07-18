@@ -40,7 +40,7 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 
 #[AsController]
 #[RoleSecurity('ROLE_MANUFACTURE_PART_APPLICATION')]
-final class IndexController extends AbstractController
+final class ManufactureApplicationIndexController extends AbstractController
 {
     #[Route('/admin/manufacture/application/{page<\d+>}', name: 'admin.index', methods: ['GET', 'POST'])]
     public function index(
@@ -91,6 +91,7 @@ final class IndexController extends AbstractController
 
         $query = $allManufacturePartApplication
             ->search($search)
+            ->setOpens($opens)
             ->findPaginator();
 
         return $this->render(

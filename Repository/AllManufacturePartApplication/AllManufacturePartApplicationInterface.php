@@ -24,10 +24,13 @@
 namespace BaksDev\Manufacture\Part\Application\Repository\AllManufacturePartApplication;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Services\Paginator\PaginatorInterface;
+use BaksDev\Manufacture\Part\Repository\OpenManufacturePart\OpenManufacturePartResult;
 use Generator;
 
 interface AllManufacturePartApplicationInterface
 {
     public function search(SearchDTO $search): self;
     public function findPaginator(): PaginatorInterface;
+
+    public function setOpens(?OpenManufacturePartResult $opens): self;
 }

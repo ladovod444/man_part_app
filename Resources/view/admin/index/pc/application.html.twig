@@ -1,4 +1,7 @@
+{# @var item \BaksDev\Manufacture\Part\Application\Repository\AllManufacturePartApplication\AllManufacturePartApplicationResult #}
 {% set identifier = item.id %}
+
+{# @var opens \BaksDev\Manufacture\Part\Repository\OpenManufacturePart\OpenManufacturePartResult #}
 
 <div id="{{ identifier }}" class="col-2 p-1 ">
 
@@ -7,9 +10,11 @@
     <div class="border-bottom border-4 rounded-4 bg-primary border-primary ">
         <div class="card bg-light-primary rounded-4" {{ priority_style }}>
 
+            {% set product_image = item.ProductRootImages %}
+
             {% set image_path = '/assets/img/blank.svg' %}
-            {% if item.product_image_ext is defined and item.product_image_ext is not null %}
-                {% set image_path = cdn_image_path(item.product_image, item.product_image_ext, item.product_image_cdn, 'small') %}
+            {% if product_image.img_ext is defined and product_image.img_ext is not null %}
+                {% set image_path = cdn_image_path(product_image.img, product_image.img_ext, product_image.img_cdn, 'small') %}
             {% endif %}
 
 
@@ -27,19 +32,6 @@
                         <span>{{ item.productTotalCompleted ? '(' ~ item.productTotalCompleted ~ ')' : '' }}</span>
                     </div>
 
-                    {#                    <div class="w-100 d-flex gap-3 align-items-center"> #}
-                    {#                        <div class="h5"> #}
-                    {#                            <input id="check-01978bde-7cd3-7c80-977c-18afa854da6d" type="checkbox" #}
-                    {#                                               class="form-check-input add-all-to-production btn-outline-danger" #}
-                    {#                                               data-formname="manufacture_selection_part_products_form" #}
-                    {#                                               data-product="01978bde-7cc4-776d-bc28-4afb423c8df5" #}
-                    {#                                               data-offer="01978bde-7cd2-7ded-ac2c-437ba1c39160" #}
-                    {#                                               data-variation="01978bde-7cd2-7ded-ac2c-437ba1ee58c0" #}
-                    {#                                               data-modification="01978bde-7cd3-7c80-977c-18afa854da6d" data-total="100" #}
-                    {#                                               title="Выбрать данный товар"></div> #}
-                    {#                        <label for="check-01978bde-7cd3-7c80-977c-18afa854da6d"></label> #}
-                    {#                    </div> #}
-                    {#                    <div class="text-muted flex-shrink-1"><span class="badge text-bg-secondary">Triangle</span></div> #}
                 </div>
             </div>
 
@@ -124,9 +116,10 @@
                            data-method="post"
                            data-formname="{{ add_selected_product_form_name }}"
                            data-product="{{ item.productId }}"
-                           data-offer="{{ item.productOfferId }}"
-                           data-variation="{{ item.productVariationId }}"
-                           data-modification="{{ item.productModificationId }}"
+
+                           data-offer="{{ opens.actionsOfferOffer ? item.productOfferId : '' }}"
+                           data-variation="{{ opens.actionsOfferVariation ? item.productVariationId : '' }}"
+                           data-modification="{{ opens.actionsOfferModification ? item.productModificationId : '' }}"
 
                            data-manufacture_application_product_event="{{ item.ManufactureApplicationEvent }}"
                            data-collection-form="product_form_data"

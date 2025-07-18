@@ -40,7 +40,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
 #[RoleSecurity('ROLE_MANUFACTURE_PART_APPLICATION_NEW')]
-final class NewController extends AbstractController
+final class ManufactureApplicationNewController extends AbstractController
 {
 
     #[Route('/admin/manufacture/part/application/new', name: 'admin.application.newedit.new', methods: ['GET', 'POST'])]
@@ -74,7 +74,6 @@ final class NewController extends AbstractController
         foreach($ManufactureApplicationDTO->getApplicationProductFormData() as $key => $ManufactureApplicationProductDTO)
         {
 
-
             $events[$key] = $ManufactureApplicationProductDTO->getProduct();
             $offers[$key] = $ManufactureApplicationProductDTO->getOffer();
             $variations[$key] = $ManufactureApplicationProductDTO->getVariation();
@@ -102,7 +101,7 @@ final class NewController extends AbstractController
         }
 
         // TODO
-        /** Получаем информацию о добавленных продуктов */
+        /** Получаем информацию о добавленных продуктах */
         $details = $productsDetail
             ->events($events)
             ->offers($offers)

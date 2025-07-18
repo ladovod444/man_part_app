@@ -1,6 +1,9 @@
 {# TODO сделать hidden поле? #}
 {# {{ form_widget(form.action) }} #}
 
+
+{#{{ dd(applications) }}#}
+
 {% if applications %}
     {% for application in applications %}
         {% set arr_property = application.categorySectionField|json_decode %}
@@ -8,7 +11,7 @@
 
 
         {# TODO #}
-        {% if loop.index == 1 %}
+{#        {% if loop.index == 1 %}#}
 
 
             {# <div class='d-flex gap-2 align-items-center'>
@@ -35,7 +38,7 @@
                     ></div>
                 </div>
 
-
+                {# Название #}
                 <div class='w-100'>
 
                     <div class="text-truncate"
@@ -122,8 +125,7 @@
 
             </div>
 
-        {% endif %}
-
+{#        {% endif %}#}
 
     {% endfor %}
 {% endif %}

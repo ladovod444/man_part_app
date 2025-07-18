@@ -40,29 +40,6 @@ class AllManufacturePartApplicationResult
         private string|null $event,
 
         private string|null $product_uid,
-        private string|null $product_offer_uid,
-
-//        private string|null $product_variation_uid,
-
-        private ?string $product_offer_value,
-        private ?string $product_offer_postfix,
-        private ?string $product_offer_reference,
-        private ?string $product_offer_name,
-        private ?string $product_offer_name_postfix,
-
-        private ?string $product_variation_uid,
-        private ?string $product_variation_value,
-        private ?string $product_variation_postfix,
-        private ?string $product_variation_reference,
-        private ?string $product_variation_name,
-        private ?string $product_variation_name_postfix,
-
-        private ?string $product_modification_uid,
-        private ?string $product_modification_value,
-        private ?string $product_modification_postfix,
-        private ?string $product_modification_reference,
-        private ?string $product_modification_name,
-        private ?string $product_modification_name_postfix,
 
         private string|null $action_name,
 
@@ -81,6 +58,29 @@ class AllManufacturePartApplicationResult
         private int|null $product_total_completed,
 
         private string|null $status,
+
+        private ?string $product_offer_uid = null,
+        private ?string $product_offer_value = null,
+        private ?string $product_offer_postfix = null,
+        private ?string $product_offer_reference = null,
+        private ?string $product_offer_name = null,
+        private ?string $product_offer_name_postfix = null,
+
+        private ?string $product_variation_uid = null,
+        private ?string $product_variation_value = null,
+        private ?string $product_variation_postfix = null,
+        private ?string $product_variation_reference = null,
+        private ?string $product_variation_name = null,
+        private ?string $product_variation_name_postfix = null,
+
+        private ?string $product_modification_uid = null,
+        private ?string $product_modification_value = null,
+        private ?string $product_modification_postfix = null,
+        private ?string $product_modification_reference= null,
+        private ?string $product_modification_name= null,
+        private ?string $product_modification_name_postfix= null,
+
+
     ) {}
 
     public function getId(): ?string
@@ -136,14 +136,16 @@ class AllManufacturePartApplicationResult
         return new ProductEventUid($this->product_uid);
     }
 
-    public function getProductOfferId(): ProductOfferUid
+    public function getProductOfferId(): ProductOfferUid|false
     {
 //        if(is_null($this->product_offer_uid))
 //        {
 //            return null;
 //        }
 
-        return new ProductOfferUid($this->product_offer_uid);
+//        return new ProductOfferUid($this->product_offer_uid);
+
+        return $this->product_offer_uid ? new ProductOfferUid($this->product_offer_uid) : false;
     }
 
     public function getProductOfferValue(): ?string

@@ -26,7 +26,6 @@ namespace BaksDev\Manufacture\Part\Application\Entity\Event;
 use BaksDev\Core\Entity\EntityEvent;
 use BaksDev\Manufacture\Part\Application\Entity\ManufactureApplication;
 use BaksDev\Manufacture\Part\Application\Entity\Product\ManufactureApplicationProduct;
-use BaksDev\Manufacture\Part\Application\Entity\Product\ManufactureApplicationProductInterface;
 use BaksDev\Manufacture\Part\Application\Type\Event\ManufactureApplicationEventUid;
 use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
 
@@ -42,7 +41,6 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Entity]
 #[ORM\Table(name: 'manufacture_application_event')]
 #[ORM\Index(columns: ['action'])]
-//#[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['fixed'])]
 class ManufactureApplicationEvent extends EntityEvent
 {
@@ -99,11 +97,7 @@ class ManufactureApplicationEvent extends EntityEvent
     public function __construct() {
         $this->id = new ManufactureApplicationEventUid();
 
-//        dd(1);
-
         $this->status = new ManufactureApplicationStatus(ManufactureApplicationStatusNew::class);
-
-//        dd($this->status);
     }
 
     public function __clone()
@@ -124,6 +118,7 @@ class ManufactureApplicationEvent extends EntityEvent
     public function setId(ManufactureApplicationEventUid $id): self
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -143,12 +138,14 @@ class ManufactureApplicationEvent extends EntityEvent
     public function setStatus(ManufactureApplicationStatus $status): self
     {
         $this->status = $status;
+
         return $this;
     }
 
     public function setProduct(Collection $product): self
     {
         $this->product = $product;
+
         return $this;
     }
 
@@ -156,6 +153,7 @@ class ManufactureApplicationEvent extends EntityEvent
     public function setPriority(bool $priority): self
     {
         $this->priority = $priority;
+
         return $this;
     }
 
