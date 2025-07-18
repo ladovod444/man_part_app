@@ -87,7 +87,7 @@ class ManufactureApplicationEvent extends EntityEvent
      */
     #[Assert\Valid]
     #[ORM\OneToOne(targetEntity: ManufactureApplicationProduct::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
-    private Collection|ManufactureApplicationProduct $product;
+    private ManufactureApplicationProduct $product;
 
     /** Статус заказа */
     #[Assert\NotBlank]
