@@ -79,11 +79,10 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
     public function setOpens(OpenManufacturePartResult|false|null $opens): self
     {
 
+        // Если есть открытая произв. партия
         if ($opens instanceof OpenManufacturePartResult)
         {
             $this->opens = $opens;
-
-            //        dd($this->opens);
 
             $this->has_offer = $opens->getActionsOfferOffer();
             $this->has_variation = $opens->getActionsOfferVariation();
@@ -135,14 +134,14 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
                 'product_trans.event = manufacture_application_product.product AND product_trans.local = :local',
             );
 
-        $dbal
-            ->addSelect('product_info.article as product_article')
-            ->join(
-                'manufacture_application_product',
-                ProductInfo::class,
-                'product_info',
-                'product_info.event = manufacture_application_product.product'
-            );
+//        $dbal
+//            ->addSelect('product_info.article as product_article')
+//            ->join(
+//                'manufacture_application_product',
+//                ProductInfo::class,
+//                'product_info',
+//                'product_info.event = manufacture_application_product.product'
+//            );
 
 
         // Торговое предложение
@@ -159,7 +158,6 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
                     'manufacture_application_product',
                     ProductOffer::class,
                     'product_offer',
-                    //            'product_offer.event = manufacture_application_product.product',
                     'product_offer.id = manufacture_application_product.offer OR product_offer.id IS NULL'
                 );
 
@@ -264,28 +262,23 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
         }
         /** Артикул продукта */
 
-        //        dd(1);
-
-        //        dd($dbal->fetchAllAssociative());
-
-        // TODO если нет variation / modification
-
-
         // Задать наличие св-ва article таблицы в зависимости от того указано ли сво-во modification в процессе производства (action)
-        $modification_article = $this->has_modification && $this->has_variation ? 'product_modification.article,' : '';
 
-        $variation_article = $this->has_variation && $this->has_offer ? 'product_variation.article,' : '';
+        //
 
-        $offer_article = $this->has_offer ? 'product_offer.article,' : '';
-
-        $dbal->addSelect('
-            COALESCE('.
-            $modification_article.
-            $variation_article.
-            $offer_article.
-            'product_info.article
-            ) AS product_article
-		');
+        // TODO убрать ARTICLE
+//
+//        $modification_article = $this->has_modification && $this->has_variation ? 'product_modification.article,' : '';
+//        $variation_article = $this->has_variation && $this->has_offer ? 'product_variation.article,' : '';
+//        $offer_article = $this->has_offer ? 'product_offer.article,' : '';
+//        $dbal->addSelect('
+//            COALESCE('.
+//            $modification_article.
+//            $variation_article.
+//            $offer_article.
+//            'product_info.article
+//            ) AS product_article
+//		');
 
         //        $dbal->addSelect('
         //            COALESCE(
@@ -314,10 +307,6 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
             );
 
         }
-
-        //        if($this->has_offer)
-        //        {
-        //
 
         // Проверить указано ли сво-во variation в процессе производства (action)
         if($this->has_offer && $this->has_variation)
@@ -358,31 +347,26 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
 
         // Задать условия для св-в product_offer_images.name таблицы  в зависимости от того указано ли сво-во offer в процессе производства (action)
 
-        $product_offer_image_cond = $this->has_offer ? 'product_offer_images.name IS NULL AND ' : '';
+//        $product_offer_image_cond = $this->has_offer ? 'product_offer_images.name IS NULL AND ' : '';
+//        $product_offer_image_cond = '';
 
-        $product_offer_image_cond = '';
-
-        //        $dbal->leftJoin(
-        //            'product_offer',
-        //            ProductPhoto::class,
-        //            'product_photo',
-        //            $product_offer_image_cond .
-        //            'product_photo.event = manufacture_application_product.product AND
-        //            product_photo.root = true
-        //        ');
+//        $dbal->leftJoin(
+//            'manufacture_application_product',
+//            ProductPhoto::class,
+//            'product_photo',
+//            $product_offer_image_cond.
+//            'product_photo.event = manufacture_application_product.product AND
+//            product_photo.root = true
+//        ');
 
         $dbal->leftJoin(
             'manufacture_application_product',
             ProductPhoto::class,
             'product_photo',
-            $product_offer_image_cond.
             'product_photo.event = manufacture_application_product.product AND
             product_photo.root = true
         ');
 
-//        dd($dbal->fetchAllAssociative());
-
-        //        dd($this->has_modification);
 
         // Задать условия для формирования поля 'product_image' для:
         // product_modification_image.name, product_variation_image.name, product_offer_images.name
@@ -431,7 +415,6 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
 
 
         // Расширение файла
-        // TODO если нет variation / modification
 
         // Задать условия для формирования полей 'product_image_ext' и 'product_image_cdn' для:
         // product_modification_image.ext, product_variation_image.ext, product_offer_images.ext
@@ -479,7 +462,6 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
                 'manufacture_application_event',
                 UsersTableActionsTrans::class,
                 'action_trans',
-                //                'action_trans.event = manufacture_application_event.action AND action_trans.local = :local'
                 'action_trans.event = manufacture_application_event.action AND action_trans.local = :local'
             );
 
@@ -511,7 +493,7 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
                 ->addSearchEqualUid('manufacture_application_product.id')
                 ->addSearchEqualUid('product_variation.id')
                 ->addSearchEqualUid('product_modification.id')
-                //                ->addSearchLike('product_trans.name');
+                                ->addSearchLike('product_trans.name')
                 //->addSearchLike('product_trans.preview')
                 ->addSearchLike('product_info.article');
 
@@ -537,8 +519,6 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
         $dbal->allGroupByExclude();
 
         return $this->paginator->fetchAllHydrate($dbal, AllManufacturePartApplicationResult::class);
-
-        //        return $this->paginator->fetchAllAssociative($dbal);
 
     }
 

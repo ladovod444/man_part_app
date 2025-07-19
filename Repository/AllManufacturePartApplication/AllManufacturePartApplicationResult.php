@@ -46,7 +46,7 @@ class AllManufacturePartApplicationResult
         private string|null $users_profile_username,
 
         private string|null $product_name,
-        private string|null $product_article,
+//        private string|null $product_article,
 
         private ?string $product_image,
         private ?string $product_image_ext,
@@ -93,10 +93,10 @@ class AllManufacturePartApplicationResult
         return $this->status;
     }
 
-    public function getProductArticle(): ?string
-    {
-        return $this->product_article;
-    }
+//    public function getProductArticle(): ?string
+//    {
+//        return $this->product_article;
+//    }
 
     public function getPriority(): ?bool
     {
