@@ -34,6 +34,7 @@ use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatu
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Users\UsersTable\Type\Actions\Event\UsersTableActionsEventUid;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\Common\Collections\Collection;
@@ -54,6 +55,7 @@ class ManufactureApplicationEvent extends EntityEvent
     #[ORM\Column(type: ManufactureApplicationEventUid::TYPE)]
     private ManufactureApplicationEventUid $id;
 
+
     /**
      * Идентификатор ManufactureApplication
      */
@@ -61,8 +63,6 @@ class ManufactureApplicationEvent extends EntityEvent
     #[Assert\Uuid]
     #[ORM\Column(type: ManufactureApplicationUid::TYPE, nullable: false)]
     private ?ManufactureApplicationUid $main = null;
-
-    // TODO добавлять поля
 
     /**
      * Идентификатор процесса производства
@@ -81,22 +81,27 @@ class ManufactureApplicationEvent extends EntityEvent
     #[ORM\Column(type: 'boolean', nullable: true)]
     private bool $priority;
 
+//    public function setPriority(bool $priority): self
+//    {
+//        $this->priority = $priority;
+//        return $this;
+//    }
 
     /**
      * Коллекция продукции
      */
     #[Assert\Valid]
-    #[ORM\OneToOne(targetEntity: ManufactureApplicationProduct::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
+    #[ORM\OneToOne(targetEntity: ManufactureApplicationProduct::class, mappedBy: 'event', cascade: ['all'])]
     private ManufactureApplicationProduct $product;
 
-    /** Статус заказа */
+    /** Статус заявки */
     #[Assert\NotBlank]
     #[ORM\Column(type: ManufactureApplicationStatus::TYPE)]
     private ManufactureApplicationStatus $status;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->id = new ManufactureApplicationEventUid();
-
         $this->status = new ManufactureApplicationStatus(ManufactureApplicationStatusNew::class);
     }
 
@@ -115,14 +120,6 @@ class ManufactureApplicationEvent extends EntityEvent
         return $this->id;
     }
 
-    public function setId(ManufactureApplicationEventUid $id): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-
     public function getMain(): ?ManufactureApplicationUid
     {
         return $this->main;
@@ -135,40 +132,9 @@ class ManufactureApplicationEvent extends EntityEvent
         return $this;
     }
 
-    public function setStatus(ManufactureApplicationStatus $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    public function setProduct(Collection $product): self
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
-
-    public function setPriority(bool $priority): self
-    {
-        $this->priority = $priority;
-
-        return $this;
-    }
-
     public function isPriority(): bool
     {
         return $this->priority;
-    }
-
-    /**
-     * Product
-     * @return Collection{ int, ManufactureApplicationProduct }
-     */
-    public function getProduct(): Collection
-    {
-        return $this->product;
     }
 
     /**
@@ -178,12 +144,34 @@ class ManufactureApplicationEvent extends EntityEvent
     public function getStatus(): ManufactureApplicationStatus
     {
         return $this->status;
-//        return $this->status instanceof ManufactureApplicationStatus ? $this->status : new ManufactureApplicationStatus($this->status);
+        //        return $this->status instanceof ManufactureApplicationStatus ? $this->status : new ManufactureApplicationStatus($this->status);
     }
 
     public function isStatusEquals(mixed $status): bool
     {
         return $this->status->equals($status);
+    }
+
+    public function getDto($dto): mixed
+    {
+        $dto = is_string($dto) && class_exists($dto) ? new $dto() : $dto;
+
+        if($dto instanceof ManufactureApplicationEventInterface)
+        {
+            return parent::getDto($dto);
+        }
+
+        throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+    }
+
+    public function setEntity($dto): mixed
+    {
+        if($dto instanceof ManufactureApplicationEventInterface || $dto instanceof self)
+        {
+            return parent::setEntity($dto);
+        }
+
+        throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
     }
 
 }

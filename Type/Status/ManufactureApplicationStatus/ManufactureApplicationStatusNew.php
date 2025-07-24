@@ -27,11 +27,13 @@ use BaksDev\Manufacture\Part\Application\Security\RoleManufactureApplicationStat
 use BaksDev\Manufacture\Part\Application\Type\Status\ManufactureApplicationStatus\Collection\ManufactureApplicationStatusInterface;
 use BaksDev\Users\Profile\Group\Security\RoleInterface;
 use BaksDev\Users\Profile\Group\Security\VoterInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 /**
  * Статус New «Новый»
  */
+#[Autoconfigure] // TODO удалить
 #[AutoconfigureTag('baks.manufacture_application.status')]
 //#[AutoconfigureTag('baks.security.voter')]
 class ManufactureApplicationStatusNew implements ManufactureApplicationStatusInterface /*, VoterInterface */

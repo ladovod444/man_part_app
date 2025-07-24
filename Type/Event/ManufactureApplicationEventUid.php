@@ -56,6 +56,9 @@ class ManufactureApplicationEventUid extends Uid
         $this->characteristic = $characteristic;
     }
 
+//    public function __clone(): void {
+//
+//    }
 
     public function getAttr(): mixed
     {

@@ -33,14 +33,14 @@ interface ManufactureApplicationProductInterface
     /**
      * Идентификатор События!!! продукта
      */
-    public function getProduct(): ?ProductEventUid;
+//    public function getProduct(): ?ProductEventUid;
 
 
     /**
      * Идентификатор торгового предложения
      */
 
-    public function getOffer(): ?ProductOfferUid;
+//    public function getOffer(): ?ProductOfferUid;
 
 
     /**

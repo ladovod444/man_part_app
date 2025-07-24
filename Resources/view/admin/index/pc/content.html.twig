@@ -120,7 +120,7 @@
 
             <div class="row cards-box-body mt-3">
                 {% for item in query.data %}
-                    {{ include(_self|replace({ "content.html.twig": "application.html.twig" })) }}
+                    {{ include(_self|replace({ "content.html.twig": "card.html.twig" })) }}
                 {% endfor %}
             </div>
 

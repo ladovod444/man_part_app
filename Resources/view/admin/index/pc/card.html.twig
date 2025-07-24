@@ -5,10 +5,10 @@
 
 <div id="{{ identifier }}" class="col-2 p-1 ">
 
-    {% set priority_style = item.priority ? 'style=border-color:#bb2d3b;border-width:2px;' %}
+    {% set priority_style = item.priority ? 'border-danger' : 'border-primary' %}
 
-    <div class="border-bottom border-4 rounded-4 bg-primary border-primary ">
-        <div class="card bg-light-primary rounded-4" {{ priority_style }}>
+    <div class="border-bottom border-4 rounded-4 bg-primary priority_style {{ priority_style }} ">
+        <div class="card bg-light-primary rounded-4" >
 
             {% set product_image = item.ProductRootImages %}
 
@@ -20,7 +20,7 @@
 
             <div class="card-body p-2">
                 <div class="d-flex align-items-center small" style="justify-content: end;">
-
+{#                    {{ item.status }}#}
                     {% set output_status =  item.status == 'new' ? 'открыта' : 'завершена' %}
                     {% set output_bg =  item.status == 'new' ? 'bg-primary' : 'bg-secondary' %}
 
@@ -134,10 +134,11 @@
                            {% endif  %}
 
                            data-manufacture_application_product_event="{{ item.ManufactureApplicationEvent }}"
+
                            data-collection-form="product_form_data"
                            data-total="100"
 
-                           data-post-class="add-one-to-production"
+                           data-post-class="add-one-to-collection"
 
                         >
                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"

@@ -29,10 +29,14 @@ use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use BaksDev\Manufacture\Part\Application\Entity\ManufactureApplication;
 use BaksDev\Manufacture\Part\Application\Repository\ActionByMain\ActionByMainInterface;
-use BaksDev\Manufacture\Part\Application\UseCase\Admin\AddProduct\ManufactureApplicationProductsDTO;
-use BaksDev\Manufacture\Part\Application\UseCase\Admin\ManufactureApplication\ManufactureApplicationDTO;
-use BaksDev\Manufacture\Part\Application\UseCase\Admin\ManufactureApplication\ManufactureApplicationForm;
-use BaksDev\Manufacture\Part\Application\UseCase\Admin\ManufactureApplication\ManufactureApplicationHandler;
+
+use BaksDev\Manufacture\Part\Application\UseCase\Admin\AddProduct\ManufactureApplicationDTOCollection\ManufactureApplicationCollectionForm;
+use BaksDev\Manufacture\Part\Application\UseCase\Admin\AddProduct\ManufactureApplicationDTOCollection\ManufactureApplicationDTOCollection;
+use BaksDev\Manufacture\Part\Application\UseCase\Admin\AddProduct\ManufactureApplicationHandler;
+use BaksDev\Manufacture\Part\Application\UseCase\Admin\AddProduct\Product\ManufactureApplicationProductDTO;
+use BaksDev\Manufacture\Part\Application\UseCase\Admin\AddProduct\ManufactureApplicationDTO;
+use BaksDev\Manufacture\Part\Application\UseCase\Admin\AddProduct\ManufactureApplicationForm;
+use BaksDev\Manufacture\Part\Application\UseCase\Admin\ManufactureApplication\ManufactureApplicationsDTO;
 use BaksDev\Products\Product\Repository\ProductsDetailByUids\ProductsDetailByUidsInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -51,54 +55,64 @@ final class ManufactureApplicationNewController extends AbstractController
         ActionByMainInterface $actionByMain,
     )
     {
-        $ManufactureApplicationDTO = new ManufactureApplicationDTO($this->getProfileUid(), $actionByMain);
 
+        $ManufactureApplicationDTOCollection = new ManufactureApplicationDTOCollection();
 
-        // Форма
         $form = $this->createForm(
-            type: ManufactureApplicationForm::class,
-            data: $ManufactureApplicationDTO,
+            type: ManufactureApplicationCollectionForm::class,
+            data: $ManufactureApplicationDTOCollection,
             options: ['action' => $this->generateUrl('manufacture-part-application:admin.application.newedit.new')]
         )
-        ->handleRequest($request);
+            ->handleRequest($request);
 
 
-        // Получить данные по товару
+
+        if($form->isSubmitted() && $form->isValid() && $form->has('manufacture_application_collection'))
+        {
+            $this->refreshTokenForm($form);
+
+
+            foreach($ManufactureApplicationDTOCollection->getProductData() as $key => $ManufactureApplicationProductDTO)
+            {
+                $ManufactureApplicationDTO = new ManufactureApplicationDTO($this->getProfileUid());
+                $ManufactureApplicationDTO->setPriority($ManufactureApplicationDTOCollection->getPriority());
+                $ManufactureApplicationDTO->setProduct($ManufactureApplicationProductDTO);
+
+                $handle = $ManufactureApplicationHandler->handle($ManufactureApplicationDTO);
+
+                $this->addFlash
+                (
+                    'admin.application.page.new',
+                    $handle instanceof ManufactureApplication ? 'admin.success.new' : 'admin.danger.new',
+                    'manufacture-part-application',
+                );
+            }
+
+            return $this->redirectToReferer();
+        }
+
+
+
+
         /**  Получить массивы UIDs по выбранным продуктам */
         $events = [];
         $offers = [];
         $variations = [];
         $modifications = [];
 
-        /** @var ManufactureApplicationProductsDTO $ManufactureApplicationProductDTO */
-        foreach($ManufactureApplicationDTO->getApplicationProductFormData() as $key => $ManufactureApplicationProductDTO)
-        {
 
+
+        /** @var ManufactureApplicationProductDTO $ManufactureApplicationProductDTO */
+        //        foreach($ManufactureApplicationsDTO->getApplicationProductFormData() as $key => $ManufactureApplicationProductDTO)
+        foreach($ManufactureApplicationDTOCollection->getProductData() as $key => $ManufactureApplicationProductDTO)
+        {
             $events[$key] = $ManufactureApplicationProductDTO->getProduct();
             $offers[$key] = $ManufactureApplicationProductDTO->getOffer();
             $variations[$key] = $ManufactureApplicationProductDTO->getVariation();
             $modifications[$key] = $ManufactureApplicationProductDTO->getModification();
-
         }
 
-        if($form->isSubmitted() && $form->isValid() && $form->has('manufacture_application'))
-        {
-            $this->refreshTokenForm($form);
 
-            // TODO handler
-//            $handle = $ManufactureApplicationHandler->handle($ManufactureApplicationDTO);
-            $handle = $ManufactureApplicationHandler->handle($ManufactureApplicationDTO, $actionByMain);
-
-
-            $this->addFlash
-            (
-                'admin.application.page.new',
-                $handle instanceof ManufactureApplication ? 'admin.success.new' : 'admin.danger.new',
-                'manufacture-part-application',
-            );
-
-            return $this->redirectToReferer();
-        }
 
         // TODO
         /** Получаем информацию о добавленных продуктах */

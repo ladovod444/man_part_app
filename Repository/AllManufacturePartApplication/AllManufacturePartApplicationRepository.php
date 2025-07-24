@@ -45,7 +45,8 @@ use BaksDev\Products\Product\Entity\Offers\Variation\Modification\ProductModific
 use BaksDev\Products\Product\Entity\Offers\Variation\ProductVariation;
 use BaksDev\Products\Product\Entity\Photo\ProductPhoto;
 use BaksDev\Products\Product\Entity\Trans\ProductTrans;
-use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
+//use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
+use BaksDev\Users\Profile\UserProfile\Entity\Event\Personal\UserProfilePersonal;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use BaksDev\Users\Profile\UserProfile\Repository\UserProfileTokenStorage\UserProfileTokenStorageInterface;
 use BaksDev\Users\UsersTable\Entity\Actions\Trans\UsersTableActionsTrans;
@@ -117,7 +118,7 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
         $dbal
             ->addSelect('manufacture_application_product.product as product_uid')
             ->addSelect('manufacture_application_product.total as product_total')
-            ->addSelect('manufacture_application_product.total_completed as product_total_completed')
+            ->addSelect('manufacture_application_product.completed as product_total_completed')
             ->leftJoin(
                 'manufacture_application_event',
                 ManufactureApplicationProduct::class,
@@ -258,6 +259,7 @@ final class AllManufacturePartApplicationRepository implements AllManufacturePar
                     CategoryProductModificationTrans::class,
                     'category_modification_trans',
                     'category_modification_trans.modification = category_modification.id AND category_modification_trans.local = :local'
+//                    'category_modification_trans.modification = category_modification.id'
                 );
         }
         /** Артикул продукта */

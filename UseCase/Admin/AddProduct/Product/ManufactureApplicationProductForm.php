@@ -23,7 +23,7 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Manufacture\Part\Application\UseCase\Admin\AddProduct;
+namespace BaksDev\Manufacture\Part\Application\UseCase\Admin\AddProduct\Product;
 
 use BaksDev\Manufacture\Part\Application\UseCase\Admin\AddProduct\Product\ManufactureApplicationProductDTO;
 use BaksDev\Products\Product\Type\Event\ProductEventUid;
@@ -41,7 +41,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class ManufactureApplicationProductsForm extends AbstractType
+final class ManufactureApplicationProductForm extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -105,7 +105,7 @@ final class ManufactureApplicationProductsForm extends AbstractType
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event): void {
 
-            /** @var ManufactureApplicationProductDTO $data */
+            /** @var ManufactureApplicationProductsDTO $data */
             $data = $event->getData();
 
             $limit['min'] = 1;
@@ -120,21 +120,6 @@ final class ManufactureApplicationProductsForm extends AbstractType
 
         });
 
-
-        $builder->add('priority', CheckboxType::class, [
-            'label' => 'Высокий приоритет',
-            'required' => false,
-        ]);
-
-
-
-        /* Сохранить ******************************************************/
-
-        $builder->add(
-            'manufacture_application_products',
-            SubmitType::class,
-            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary text-nowrap']]
-        );
 
     }
 

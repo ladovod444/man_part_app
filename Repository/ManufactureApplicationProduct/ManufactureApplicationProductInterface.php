@@ -21,43 +21,23 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Manufacture\Part\Application\Repository\ActionByMain;
+namespace BaksDev\Manufacture\Part\Application\Repository\ManufactureApplicationProduct;
 
-use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Manufacture\Part\Application\Type\Id\ManufactureApplicationUid;
-use BaksDev\Users\UsersTable\Entity\Actions\Event\UsersTableActionsEvent;
-use BaksDev\Users\UsersTable\Type\Actions\Event\UsersTableActionsEventUid;
+use BaksDev\Manufacture\Part\Entity\Products\ManufacturePartProduct;
+use BaksDev\Products\Product\Type\Event\ProductEventUid;
+use BaksDev\Products\Product\Type\Offers\Id\ProductOfferUid;
+use BaksDev\Products\Product\Type\Offers\Variation\Id\ProductVariationUid;
+use BaksDev\Products\Product\Type\Offers\Variation\Modification\Id\ProductModificationUid;
 
-final class ActionByMainRepository implements ActionByMainInterface
+interface ManufactureApplicationProductInterface
 {
-
-    public function __construct(
-        private readonly DBALQueryBuilder $DBALQueryBuilder,
-    ) {}
-
-    public function findUsersTableActionByMain(ManufactureApplicationUid $main): UsersTableActionsEventUid|string
-    {
-
-        $dbal = $this->DBALQueryBuilder
-            ->createQueryBuilder(self::class)
-            ->bindLocal();
-
-        $dbal->select('event.id');
-
-        $dbal
-            ->from(UsersTableActionsEvent::class, 'event')
-            ->where('event.main = :main')
-            ->setParameter(
-                key: 'main',
-                value: $main,
-                type: ManufactureApplicationUid::TYPE
-            );
-
-        $result = $dbal->fetchAssociative();
-
-        return new UsersTableActionsEventUid($result['id']);
-    }
-
-
-
+//    public function findApplicationProduct(ManufacturePartProduct $manufacturePartProduct): array;
+    public function findApplicationProduct(
+        string|ProductEventUid $product,
+        string|ProductOfferUid $offer,
+        string|ProductVariationUid $variation,
+        string|ProductModificationUid|false $modification,
+//    ): array|false;
+    ): ManufactureApplicationProductResult|false;
 }

@@ -37,32 +37,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'manufacture_application_product')]
-#[ORM\Index(columns: ['event'])]
-//#[ORM\Index(columns: ['product', 'offer', 'variation', 'modification'])]
 #[ORM\Index(columns: ['product', 'offer', 'variation'])]
 class ManufactureApplicationProduct extends EntityEvent
 {
-    /**
-     * Идентификатор
-     */
-    #[Assert\NotBlank]
-    #[Assert\Uuid]
-    #[ORM\Id]
-    #[ORM\Column(type: ManufactureApplicationProductUid::TYPE)]
-    private ManufactureApplicationProductUid $id;
-
     /** Связь на событие */
     #[Assert\NotBlank]
-    #[ORM\OneToOne(targetEntity: ManufactureApplicationEvent::class, inversedBy: "product", cascade: ['all'] )]
+    #[ORM\Id]
+    #[ORM\OneToOne(targetEntity: ManufactureApplicationEvent::class, inversedBy: "product")]
     #[ORM\JoinColumn(name: 'event', referencedColumnName: "id")]
     private ManufactureApplicationEvent $event;
-
-    public function setEvent(ManufactureApplicationEvent $event): self
-    {
-        $this->event = $event;
-        return $this;
-    }
-
 
     /**
      * Идентификатор События!!! продукта
@@ -71,11 +54,6 @@ class ManufactureApplicationProduct extends EntityEvent
     #[Assert\Uuid]
     #[ORM\Column(type: ProductEventUid::TYPE)]
     private ProductEventUid $product;
-
-    public function getProduct(): ProductEventUid
-    {
-        return $this->product;
-    }
 
     /**
      * Идентификатор торгового предложения
@@ -109,25 +87,19 @@ class ManufactureApplicationProduct extends EntityEvent
     /**
      * Количество завершенных
      */
-    #[Assert\NotBlank]
-    #[Assert\Range(min: 1)]
+//    #[Assert\NotBlank]
+//    #[Assert\Range(min: 1)]
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    private int $total_completed;
+    private ?int $completed;
 
     public function __construct(?ManufactureApplicationEvent $event)
     {
-        $this->id = new ManufactureApplicationProductUid();
         $this->event = $event;
-    }
-
-    public function __clone()
-    {
-        $this->id = clone $this->id;
     }
 
     public function __toString(): string
     {
-        return (string) $this->id;
+        return (string) $this->event;
     }
 
     public function getTotal(): int
@@ -135,28 +107,15 @@ class ManufactureApplicationProduct extends EntityEvent
         return $this->total;
     }
 
-    public function setTotal(int $total): self
+    public function getProduct(): ProductEventUid
     {
-        $this->total = $total;
-        return $this;
+        return $this->product;
     }
 
     public function getTotalCompleted(): int
     {
-        return $this->total_completed;
+        return $this->completed;
     }
-
-    public function setTotalCompleted(int $total_completed): self
-    {
-        $this->total_completed = $total_completed;
-        return $this;
-    }
-
-    public function getEvent(): ManufactureApplicationEvent
-    {
-        return $this->event;
-    }
-
 
     public function getDto($dto): mixed
     {
